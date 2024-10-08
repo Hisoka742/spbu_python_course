@@ -49,5 +49,7 @@ def test_vector_angle():
 def test_zero_vector_angle():
     vec1 = Vector([0, 0, 0])
     vec2 = Vector([1, 0, 0])
-    with pytest.raises(ZeroDivisionError, match="Cannot calculate angle with zero-magnitude vector."):
+    with pytest.raises(
+        ZeroDivisionError, match="Cannot calculate angle with zero-magnitude vector."
+    ):
         vec1 ^ vec2
