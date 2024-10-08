@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from project.vector_matrix_operations.Matrix import Matrix
+from project.vector_matrix_operations.MATRIX import Matrix
 
 # Tests for Matrix class functionality
 class TestMatrix:

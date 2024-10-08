@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from math import isclose
-from project.vector_matrix_operations.Vector import Vector
+from project.vector_matrix_operations.VECTOR import Vector
 
 
 # Tests for Vector class functionality
