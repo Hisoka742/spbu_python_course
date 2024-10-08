@@ -75,7 +75,9 @@ class TestMatrix:
     def test_shape_mismatch_multiplication(self):
         mat_a = Matrix([[1, 2], [3, 4]])
         mat_b = Matrix([[5, 6, 7]])
-        with pytest.raises(ValueError, match="Shape mismatch: cannot multiply matrices"):
+        with pytest.raises(
+            ValueError, match="Shape mismatch: cannot multiply matrices"
+        ):
             mat_a @ mat_b
 
     def test_transpose_functionality(self):
