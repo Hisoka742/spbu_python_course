@@ -4,7 +4,6 @@ from project.vector_matrix_operations.Matrix import Matrix
 
 # Tests for Matrix class functionality
 class TestMatrix:
-
     def test_get_item(self):
         matrix = Matrix([[1, 2], [3, 4]])
         assert matrix[0, 1] == 2, "Expected element at (0, 1) to be 2"
@@ -13,7 +12,9 @@ class TestMatrix:
     def test_repr_format(self):
         matrix = Matrix([[1, 2], [3, 4]])
         expected_representation = "Matrix([[1, 2], [3, 4]])"
-        assert repr(matrix) == expected_representation, f"Expected repr to be {expected_representation}"
+        assert (
+            repr(matrix) == expected_representation
+        ), f"Expected repr to be {expected_representation}"
 
     def test_string_format(self):
         matrix = Matrix([[1, 2], [3, 4]])
@@ -25,13 +26,17 @@ class TestMatrix:
         mat_b = Matrix([[5, 6], [7, 8]])
         sum_result = mat_a + mat_b
         expected_sum = Matrix([[6, 8], [10, 12]])
-        assert np.array_equal(sum_result, expected_sum), "Matrix addition result is incorrect"
+        assert np.array_equal(
+            sum_result, expected_sum
+        ), "Matrix addition result is incorrect"
 
     def test_add_with_zero_matrix(self):
         mat_a = Matrix([[1, 2], [3, 4]])
         zero_mat = Matrix([[0, 0], [0, 0]])
         sum_result = mat_a + zero_mat
-        assert np.array_equal(sum_result, mat_a), "Adding zero matrix should return original matrix"
+        assert np.array_equal(
+            sum_result, mat_a
+        ), "Adding zero matrix should return original matrix"
 
     def test_shape_mismatch_addition(self):
         mat_a = Matrix([[1, 2], [3, 4]])
@@ -44,7 +49,9 @@ class TestMatrix:
         mat_b = Matrix([[5, 6], [7, 8]])
         product_result = mat_a @ mat_b
         expected_product = Matrix([[19, 22], [43, 50]])
-        assert np.array_equal(product_result, expected_product), "Matrix multiplication result is incorrect"
+        assert np.array_equal(
+            product_result, expected_product
+        ), "Matrix multiplication result is incorrect"
 
     def test_non_square_multiplication(self):
         mat_a = Matrix([[1, 2, 3], [4, 5, 6]])  # 2x3 matrix
@@ -61,16 +68,22 @@ class TestMatrix:
         mat_a = Matrix([[1, 2], [3, 4]])
         identity_matrix = Matrix([[1, 0], [0, 1]])
         product_result = mat_a @ identity_matrix
-        assert np.array_equal(product_result, mat_a), "Multiplying by identity matrix should return original matrix"
+        assert np.array_equal(
+            product_result, mat_a
+        ), "Multiplying by identity matrix should return original matrix"
 
     def test_shape_mismatch_multiplication(self):
         mat_a = Matrix([[1, 2], [3, 4]])
         mat_b = Matrix([[5, 6, 7]])
-        with pytest.raises(ValueError, match="Matrix shapes are not compatible for multiplication"):
+        with pytest.raises(
+            ValueError, match="Matrix shapes are not compatible for multiplication"
+        ):
             mat_a @ mat_b
 
     def test_transpose_functionality(self):
         mat_a = Matrix([[1, 2], [3, 4]])
         transposed_result = mat_a.T()
         expected_transpose = Matrix([[1, 3], [2, 4]])
-        assert np.array_equal(transposed_result, expected_transpose), "Matrix transpose result is incorrect"
+        assert np.array_equal(
+            transposed_result, expected_transpose
+        ), "Matrix transpose result is incorrect"

@@ -1,6 +1,7 @@
 import numpy as np
 from typing import Iterable
 
+
 class Matrix:
     def __init__(self, data: Iterable[Iterable[float | int]]):
         self.matrix = np.array(data)

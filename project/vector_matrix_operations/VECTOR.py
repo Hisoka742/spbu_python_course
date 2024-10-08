@@ -2,6 +2,7 @@ import numpy as np
 from math import acos, sqrt
 from typing import Iterable
 
+
 class Vector:
     def __init__(self, data: Iterable[float | int]):
         self.vector = np.array(data)
@@ -24,7 +25,9 @@ class Vector:
         if len(self.vector) != len(other.vector):
             raise ValueError("Vectors must be of the same size.")
         if self.norm() == 0 or other.norm() == 0:
-            raise ZeroDivisionError("Cannot calculate angle with zero-magnitude vector.")
+            raise ZeroDivisionError(
+                "Cannot calculate angle with zero-magnitude vector."
+            )
         return acos((self * other) / (self.norm() * other.norm()))
 
     def norm(self) -> float:

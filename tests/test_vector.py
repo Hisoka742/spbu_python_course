@@ -6,10 +6,11 @@ from project.vector_matrix_operations.Vector import Vector
 
 # Tests for Vector class functionality
 class TestVector:
-
     def test_initialization(self):
         vector = Vector([7, 8, 9])
-        assert np.array_equal(vector, np.array([7, 8, 9])), "Initialization of vector failed"
+        assert np.array_equal(
+            vector, np.array([7, 8, 9])
+        ), "Initialization of vector failed"
 
     def test_length(self):
         vector = Vector([7, 8, 9])
@@ -42,10 +43,14 @@ class TestVector:
         vector_a = Vector([5, 0])
         vector_b = Vector([0, 5])
         angle = vector_a ^ vector_b
-        assert isclose(angle, np.pi / 2), "Calculated angle between vectors is incorrect"
+        assert isclose(
+            angle, np.pi / 2
+        ), "Calculated angle between vectors is incorrect"
 
     def test_zero_vector_angle_calculation(self):
         zero_vector = Vector([0, 0, 0])
         non_zero_vector = Vector([1, 2, 3])
-        with pytest.raises(ZeroDivisionError, match="None of the vectors must have a zero magnitude"):
+        with pytest.raises(
+            ZeroDivisionError, match="None of the vectors must have a zero magnitude"
+        ):
             zero_vector ^ non_zero_vector
