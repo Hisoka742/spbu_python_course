@@ -1,15 +1,17 @@
 from curry_uncurry_cache import Evaluated, Isolated, smart_args
 
+
 def test_smart_args_isolated():
     @smart_args()
     def test_func(*, d=Isolated()):
-        d['key'] = 'value'
+        d["key"] = "value"
         return d
 
-    d = {'key': 'initial'}
+    d = {"key": "initial"}
     result = test_func(d=d)
-    assert result['key'] == 'value'
-    assert d['key'] == 'initial'  # Original dict is not mutated
+    assert result["key"] == "value"
+    assert d["key"] == "initial"  # Original dict is not mutated
+
 
 def test_smart_args_evaluated():
     counter = [0]
@@ -25,6 +27,7 @@ def test_smart_args_evaluated():
     assert test_func() == 1
     assert test_func() == 2
     assert test_func() == 3
+
 
 def test_smart_args_positional():
     @smart_args(allow_positional=True)

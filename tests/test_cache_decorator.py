@@ -1,5 +1,6 @@
 from curry_uncurry_cache import cache_results
 
+
 def test_cache_decorator():
     @cache_results(max_size=2)
     def add(x, y):
