@@ -1,4 +1,7 @@
 black
+collections
+functools
+inspect
 mypy
 numpy
 pre-commit
