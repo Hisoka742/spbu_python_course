@@ -1,5 +1,4 @@
 black
-collections
 functools
 inspect
 mypy
