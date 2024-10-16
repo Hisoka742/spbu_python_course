@@ -1,5 +1,5 @@
 import pytest
-from project.curry_uncurry_cache import cache_results
+from project.curry_uncurry_cache.curry_uncurry_cache import cache_results
 
 
 def test_cache_decorator():

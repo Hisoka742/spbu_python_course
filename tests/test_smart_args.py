@@ -1,5 +1,5 @@
 import pytest
-from project.curry_uncurry_cache import Evaluated, Isolated, smart_args
+from project.curry_uncurry_cache.curry_uncurry_cache import Evaluated, Isolated, smart_args
 
 
 def test_smart_args_isolated():
