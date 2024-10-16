@@ -1,6 +1,4 @@
 black
-functools
-inspect
 mypy
 numpy
 pre-commit
