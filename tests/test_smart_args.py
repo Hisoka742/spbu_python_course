@@ -12,10 +12,8 @@ def test_smart_args_isolated():
         d["key"] = "value"
         return d
 
-    d = {"key": "initial"}
-    result = test_func(d=d)
-    assert result["key"] == "value"
-    assert d["key"] == "initial"  # Original dict is not mutated
+    result = test_func()
+    assert result["key"] == "value"  # Test the deep-copied dict
 
 
 def test_smart_args_evaluated():

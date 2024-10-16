@@ -96,26 +96,14 @@ def smart_args(allow_positional=False):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             bound_args = signature.bind_partial(*args, **kwargs)
-            for name, param in signature.parameters.items():
-                if name in bound_args.arguments:
-                    value = bound_args.arguments[name]
-                    if isinstance(value, Evaluated):
-                        bound_args.arguments[name] = value.evaluate()
-                    elif isinstance(value, Isolated):
-                        bound_args.arguments[name] = value.copy(
-                            bound_args.arguments[name]
-                        )
+            bound_args.apply_defaults()
 
-            if allow_positional:
-                # Process positional arguments for types Evaluated and Isolated
-                arg_values = list(bound_args.arguments.values())
-                for idx, value in enumerate(arg_values):
-                    if isinstance(value, Evaluated):
-                        arg_values[idx] = value.evaluate()
-                    elif isinstance(value, Isolated):
-                        arg_values[idx] = value.copy(arg_values[idx])
+            for name, value in bound_args.arguments.items():
+                if isinstance(value, Evaluated):
+                    bound_args.arguments[name] = value.evaluate()
+                elif isinstance(value, Isolated):
+                    bound_args.arguments[name] = value.copy(bound_args.arguments[name])
 
-                return func(*arg_values)
             return func(*bound_args.args, **bound_args.kwargs)
 
         return wrapper
