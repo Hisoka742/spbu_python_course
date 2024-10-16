@@ -1,5 +1,9 @@
 import pytest
-from curry_uncurry_cache import curry_explicit, uncurry_explicit, InvalidArityException
+from project.curry_uncurry_cache import (
+    curry_explicit,
+    uncurry_explicit,
+    InvalidArityException,
+)
 
 
 def test_curry_basic():
