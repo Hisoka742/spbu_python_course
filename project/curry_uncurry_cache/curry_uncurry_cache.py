@@ -80,11 +80,21 @@ class Evaluated:
 
 
 class Isolated:
-    def __init__(self):
-        pass
+    def __init__(self, value=None):
+        # Initialize with a deep copy of the value (default to an empty dictionary)
+        self.value = copy.deepcopy(value if value is not None else {})
 
-    def copy(self, value):
-        return copy.deepcopy(value)
+    def copy(self, value=None):
+        # Return a deep copy of the internal dictionary or passed value
+        return copy.deepcopy(self.value if value is None else value)
+
+    def __getitem__(self, key):
+        # Allow dictionary-style access
+        return self.value[key]
+
+    def __setitem__(self, key, value):
+        # Allow dictionary-style assignment
+        self.value[key] = value
 
 
 # Decorator to handle smart arguments with support for positional args

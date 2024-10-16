@@ -8,12 +8,12 @@ from project.curry_uncurry_cache.curry_uncurry_cache import (
 
 def test_smart_args_isolated():
     @smart_args()
-    def test_func(*, d=Isolated()):
-        d["key"] = "value"
+    def test_func(*, d=Isolated({"key": "initial"})):
+        d["key"] = "value"  # Should now work
         return d
 
     result = test_func()
-    assert result["key"] == "value"  # Test the deep-copied dict
+    assert result["key"] == "value"  # Check if key was updated
 
 
 def test_smart_args_evaluated():
