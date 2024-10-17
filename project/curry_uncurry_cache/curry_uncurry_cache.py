@@ -132,11 +132,7 @@ class Isolated:
 def smart_args(allow_positional: bool = False) -> Callable:
     """
     Decorator to handle special arguments like Evaluated and Isolated.
-
-    :param allow_positional: Whether to allow positional arguments.
-    :return: A decorated function that processes Evaluated and Isolated arguments.
     """
-
     def decorator(func: Callable) -> Callable:
         spec = inspect.signature(func)
 
@@ -151,9 +147,7 @@ def smart_args(allow_positional: bool = False) -> Callable:
                     bound_args.arguments[name] = value.evaluate()
                 elif isinstance(value, Isolated):
                     print(f"Copying {name} using Isolated...")
-                    bound_args.arguments[
-                        name
-                    ] = value.copy()  # Deep copy the Isolated value
+                    bound_args.arguments[name] = Isolated(value.copy()).copy()  # Ensure deep copy
 
             return func(*bound_args.args, **bound_args.kwargs)
 
