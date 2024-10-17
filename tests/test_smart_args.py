@@ -75,9 +75,18 @@ def test_smart_args_with_evaluated_and_isolated():
         y["counter"] = x
         return y
 
+    # First call, x is evaluated and set to 1
     assert some_func() == {"counter": 1}
+
+    # Second call, x is evaluated and set to 2
     assert some_func() == {"counter": 2}
 
+    # Testing with original_dict to check isolation
     original_dict = {"counter": 42}
-    assert some_func(y=original_dict) == {"counter": 3}
+    result = some_func(y=original_dict)
+
+    # Verify that the result is isolated from the original_dict
+    assert result == {"counter": 3}  # Should be modified version
+
+    # Ensure original_dict is not changed
     assert original_dict == {"counter": 42}  # Original dict should not be modified
