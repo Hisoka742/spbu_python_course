@@ -133,7 +133,6 @@ def smart_args(allow_positional: bool = False) -> Callable:
     """
     Decorator to handle special arguments like Evaluated and Isolated.
     """
-
     def decorator(func: Callable) -> Callable:
         spec = inspect.signature(func)
 
@@ -146,11 +145,12 @@ def smart_args(allow_positional: bool = False) -> Callable:
                 if isinstance(value, Evaluated):
                     print(f"Evaluating {name} using Evaluated...")
                     bound_args.arguments[name] = value.evaluate()
+                elif isinstance(value, dict):  # If it's a dict and not an Isolated instance
+                    print(f"Wrapping {name} with Isolated...")
+                    bound_args.arguments[name] = Isolated(value).copy()  # Deep copy the dict
                 elif isinstance(value, Isolated):
                     print(f"Copying {name} using Isolated...")
-                    bound_args.arguments[name] = Isolated(
-                        value.copy()
-                    ).copy()  # Ensure deep copy
+                    bound_args.arguments[name] = value.copy()
 
             return func(*bound_args.args, **bound_args.kwargs)
 
