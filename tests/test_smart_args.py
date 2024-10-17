@@ -16,8 +16,9 @@ def test_smart_args_isolated():
         ] = "value"  # Since `Isolated` is used, the original dict should not be affected
         return d
 
+    a = {"key": "42"}
     # Call the function and check if the isolated dictionary is updated
-    result = test_func()
+    result = test_func(d=a)
     assert result["key"] == "value"  # Ensure that the value was correctly updated
 
 
@@ -60,3 +61,23 @@ def test_smart_args_positional():
         3,
         42,
     ]  # Ensure that the original list is not mutated and the copy is modified
+
+
+def test_smart_args_with_evaluated_and_isolated():
+    counter = [0]
+
+    def increment():
+        counter[0] += 1
+        return counter[0]
+
+    @smart_args()
+    def some_func(x=Evaluated(increment), y=Isolated()):
+        y["counter"] = x
+        return y
+
+    assert some_func() == {"counter": 1}
+    assert some_func() == {"counter": 2}
+
+    original_dict = {"counter": 42}
+    assert some_func(y=original_dict) == {"counter": 3}
+    assert original_dict == {"counter": 42}  # Original dict should not be modified

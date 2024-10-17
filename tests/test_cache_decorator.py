@@ -32,3 +32,32 @@ def test_cache_decorator():
     # `add(1, 2)` is the oldest and should have been evicted from the cache.
     # When we call `add(1, 2)` again, the result will be recalculated.
     assert add(1, 2) == 3  # Recalculated since it was evicted from the cache
+
+
+def test_cache_with_value_checking():
+    call_counter = [0]
+
+    @cache_results(max_size=2)
+    def add(x, y):
+        call_counter[0] += 1
+        return x + y
+
+    # First call, cache is empty, function is executed
+    assert add(1, 2) == 3
+    assert call_counter[0] == 1  # Function was executed once
+
+    # Second call with same arguments, should be from cache
+    assert add(1, 2) == 3
+    assert call_counter[0] == 1  # No new execution, from cache
+
+    # New arguments, new execution
+    assert add(2, 3) == 5
+    assert call_counter[0] == 2  # Function was executed again
+
+    # Adding a new entry, causing the oldest to be evicted
+    assert add(3, 4) == 7
+    assert call_counter[0] == 3  # Function executed
+
+    # Oldest entry evicted, should execute again
+    assert add(1, 2) == 3
+    assert call_counter[0] == 4  # Executed again, cache evicted

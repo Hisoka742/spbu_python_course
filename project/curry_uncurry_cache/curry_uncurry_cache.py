@@ -1,53 +1,59 @@
-import functools  # For higher-order functions like wraps
-import inspect  # For introspecting function signatures
-from collections import OrderedDict  # For maintaining an ordered cache (LRU)
-import copy  # For deep copying in the Isolated class
+import functools
+import inspect
+from collections import OrderedDict
+from typing import Callable, Any, Optional, Dict, Tuple
+import copy
 
 
-# Exception for invalid arity values
 class InvalidArityException(Exception):
+    """Exception raised when invalid arity is provided."""
+
     pass
 
 
-# Currying function: transforms a function into a series of unary functions
-def curry_explicit(func, arity):
-    # Ensure the arity is valid (non-negative)
+def curry_explicit(func: Callable, arity: int) -> Callable:
+    """
+    Transforms a function into a curried version, i.e., a series of unary functions.
+
+    :param func: The function to curry.
+    :param arity: The number of arguments the function accepts.
+    :raises InvalidArityException: If arity is negative or more arguments are provided than arity.
+    :return: Curried version of the function.
+    """
     if arity < 0:
         raise InvalidArityException("Arity cannot be negative")
 
-    # If arity is 0, just return the result of the function
     if arity == 0:
         return lambda: func()
 
-    # Define a curried function
     def curried(*args):
-        # Ensure no more than the expected number of arguments are passed
         if len(args) > arity:
             raise InvalidArityException(f"Expected {arity} arguments, got {len(args)}")
 
-        # If all arguments are provided, call the original function
         if len(args) == arity:
             return func(*args)
 
-        # Otherwise, return a function that accepts the next argument
         return lambda x: curried(*args, x)
 
     return curried
 
 
-# Uncurrying function: converts a curried function back to a function that takes all arguments at once
-def uncurry_explicit(func, arity):
-    # Ensure the arity is valid (non-negative)
+def uncurry_explicit(func: Callable, arity: int) -> Callable:
+    """
+    Uncurries a curried function, allowing it to accept all arguments at once.
+
+    :param func: The curried function to uncurry.
+    :param arity: The number of arguments the function expects.
+    :raises InvalidArityException: If arity is negative or incorrect number of arguments are provided.
+    :return: The uncurried version of the function.
+    """
     if arity < 0:
         raise InvalidArityException("Arity cannot be negative")
 
-    # Define an uncurried function
     def uncurried(*args):
-        # Ensure the correct number of arguments is passed
         if len(args) != arity:
             raise InvalidArityException(f"Expected {arity} arguments, got {len(args)}")
 
-        # Apply the arguments one by one to the curried function
         result = func
         for arg in args:
             result = result(arg)
@@ -56,28 +62,29 @@ def uncurry_explicit(func, arity):
     return uncurried
 
 
-# Cache decorator: caches function results based on arguments
-def cache_results(max_size=0):
-    def decorator(func):
-        # OrderedDict to store cache entries with LRU (least recently used) eviction
-        cache = OrderedDict()
+def cache_results(max_size: int = 0) -> Callable:
+    """
+    Decorator to cache function results based on arguments, with a limit on cache size.
+
+    :param max_size: The maximum number of cached results. 0 means unlimited.
+    :return: A decorated function with caching enabled.
+    """
+
+    def decorator(func: Callable) -> Callable:
+        cache: OrderedDict[Tuple[Any, ...], Any] = OrderedDict()
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            # Create a cache key from the arguments
             key = (args, tuple(sorted(kwargs.items())))
-            # If the result is already cached, move it to the end (mark it as recently used)
             if key in cache:
                 cache.move_to_end(key)
                 return cache[key]
 
-            # Call the original function and cache the result
             result = func(*args, **kwargs)
             cache[key] = result
 
-            # If cache exceeds the max size, evict the least recently used item
             if max_size > 0 and len(cache) > max_size:
-                cache.popitem(last=False)  # Remove the oldest item
+                cache.popitem(last=False)
 
             return result
 
@@ -86,94 +93,59 @@ def cache_results(max_size=0):
     return decorator
 
 
-# Evaluated class: for lazy evaluation of function results (evaluates only when accessed)
 class Evaluated:
-    def __init__(self, func):
-        # Ensure that the provided argument is a callable function
+    """Lazy evaluation of a function when accessed."""
+
+    def __init__(self, func: Callable[[], Any]):
         assert callable(func), "Evaluated must be initialized with a function"
         self.func = func
 
-    # Evaluate the function when needed
-    def evaluate(self):
+    def evaluate(self) -> Any:
+        """Evaluate the stored function."""
         return self.func()
 
 
-# Isolated class: deep copies the object to prevent modifications to the original
 class Isolated:
-    def __init__(self, value=None):
-        # Initialize with a deep copy of the value (default is an empty dictionary)
+    """Deep copy an object to prevent external mutations."""
+
+    def __init__(self, value: Optional[Dict] = None):
         self.value = copy.deepcopy(value if value is not None else {})
 
-    # Return a deep copy of the internal dictionary or passed value
-    def copy(self, value=None):
+    def copy(self, value: Optional[Any] = None) -> Any:
+        """Return a deep copy of the stored value or a new value."""
         return copy.deepcopy(self.value if value is None else value)
 
-    # Allow dictionary-style access
-    def __getitem__(self, key):
+    def __getitem__(self, key: Any) -> Any:
         return self.value[key]
 
-    # Allow dictionary-style assignment
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: Any, value: Any):
         self.value[key] = value
 
 
-# Decorator to handle smart arguments (Isolated, Evaluated) and positional args
-def smart_args(allow_positional=False):
-    def decorator(func):
-        # Get the full argument specification for the function
-        spec = inspect.getfullargspec(func)
-        signature = inspect.signature(func)
+def smart_args(allow_positional: bool = False) -> Callable:
+    """
+    Decorator to handle special arguments like Evaluated and Isolated.
+
+    :param allow_positional: Whether to allow positional arguments.
+    :return: A decorated function that processes Evaluated and Isolated arguments.
+    """
+
+    def decorator(func: Callable) -> Callable:
+        spec = inspect.signature(func)
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            # Bind the passed arguments to the function's signature
-            bound_args = signature.bind_partial(*args, **kwargs)
-            bound_args.apply_defaults()  # Fill in default arguments
+            bound_args = spec.bind_partial(*args, **kwargs)
+            bound_args.apply_defaults()
 
-            # Process the bound arguments
             for name, value in bound_args.arguments.items():
-                # If the value is an instance of Evaluated, evaluate it
                 if isinstance(value, Evaluated):
                     bound_args.arguments[name] = value.evaluate()
-                # If the value is an instance of Isolated, deep copy it
                 elif isinstance(value, Isolated):
-                    bound_args.arguments[name] = value.copy(bound_args.arguments[name])
+                    bound_args.arguments[name] = value.copy()
 
-            # Call the original function with the processed arguments
             return func(*bound_args.args, **bound_args.kwargs)
 
         return wrapper
 
     return decorator
-
-
-# Example usage of smart_args with Isolated and Evaluated
-@smart_args()
-def check_isolation(*, d=Isolated()):
-    d["a"] = 0  # Modify the dictionary
-    return d
-
-
-@smart_args()
-def check_evaluation(*, x=10, y=Evaluated(lambda: 42)):
-    print(x, y)  # Print the values (Evaluated should be evaluated)
-
-
-# Example usage:
-# Currying and uncurrying examples
-f2 = curry_explicit(lambda x, y, z: f"<{x},{y},{z}>", 3)  # Curry a 3-argument function
-g2 = uncurry_explicit(f2, 3)  # Uncurry the function back to its original form
-
-if __name__ == "__main__":
-    print(f2(123)(456)(562))  # Output: <123,456,562>
-    print(g2(123, 456, 562))  # Output: <123,456,562>
-
-    # Example of caching:
-    @cache_results(max_size=3)
-    def cached_function(x, y):
-        return x + y
-
-    # Example of smart arguments:
-    check_isolation(d={"a": 10})  # Call with an isolated argument
-    check_evaluation()  # Evaluate the `Evaluated` argument lazily
-    check_evaluation(y=100)  # Override `Evaluated` with a regular value
