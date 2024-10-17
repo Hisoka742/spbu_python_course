@@ -122,6 +122,26 @@ class Isolated:
         self.value[key] = value
 
 
+class Isolated:
+    """Deep copy an object to prevent external mutations."""
+
+    def __init__(self, value: Optional[Dict] = None):
+        self.value = copy.deepcopy(value if value is not None else {})
+
+    def copy(self) -> Any:
+        """Return a deep copy of the stored value."""
+        return copy.deepcopy(self.value)
+
+    def __getitem__(self, key: Any) -> Any:
+        return self.value[key]
+
+    def __setitem__(self, key: Any, value: Any):
+        self.value[key] = value
+
+    def __repr__(self):
+        return repr(self.value)
+
+
 def smart_args(allow_positional: bool = False) -> Callable:
     """
     Decorator to handle special arguments like Evaluated and Isolated.
@@ -142,7 +162,7 @@ def smart_args(allow_positional: bool = False) -> Callable:
                 if isinstance(value, Evaluated):
                     bound_args.arguments[name] = value.evaluate()
                 elif isinstance(value, Isolated):
-                    bound_args.arguments[name] = value.copy()
+                    bound_args.arguments[name] = value.copy()  # Ensure deep copy
 
             return func(*bound_args.args, **bound_args.kwargs)
 
