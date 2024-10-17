@@ -104,33 +104,19 @@ class Evaluated:
         """Evaluate the stored function."""
         return self.func()
 
-
 class Isolated:
     """Deep copy an object to prevent external mutations."""
 
     def __init__(self, value: Optional[Dict] = None):
+        # Deep copy the input value to ensure isolation
         self.value = copy.deepcopy(value if value is not None else {})
-
-    def copy(self, value: Optional[Any] = None) -> Any:
-        """Return a deep copy of the stored value or a new value."""
-        return copy.deepcopy(self.value if value is None else value)
-
-    def __getitem__(self, key: Any) -> Any:
-        return self.value[key]
-
-    def __setitem__(self, key: Any, value: Any):
-        self.value[key] = value
-
-
-class Isolated:
-    """Deep copy an object to prevent external mutations."""
-
-    def __init__(self, value: Optional[Dict] = None):
-        self.value = copy.deepcopy(value if value is not None else {})
+        print(f"Initialized Isolated with value: {self.value}")
 
     def copy(self) -> Any:
         """Return a deep copy of the stored value."""
-        return copy.deepcopy(self.value)
+        copied_value = copy.deepcopy(self.value)
+        print(f"Returning a deep copy: {copied_value}")
+        return copied_value
 
     def __getitem__(self, key: Any) -> Any:
         return self.value[key]
@@ -149,7 +135,6 @@ def smart_args(allow_positional: bool = False) -> Callable:
     :param allow_positional: Whether to allow positional arguments.
     :return: A decorated function that processes Evaluated and Isolated arguments.
     """
-
     def decorator(func: Callable) -> Callable:
         spec = inspect.signature(func)
 
@@ -160,9 +145,11 @@ def smart_args(allow_positional: bool = False) -> Callable:
 
             for name, value in bound_args.arguments.items():
                 if isinstance(value, Evaluated):
+                    print(f"Evaluating {name} using Evaluated...")
                     bound_args.arguments[name] = value.evaluate()
                 elif isinstance(value, Isolated):
-                    bound_args.arguments[name] = value.copy()  # Ensure deep copy
+                    print(f"Copying {name} using Isolated...")
+                    bound_args.arguments[name] = value.copy()  # Deep copy the Isolated value
 
             return func(*bound_args.args, **bound_args.kwargs)
 
