@@ -104,6 +104,7 @@ class Evaluated:
         """Evaluate the stored function."""
         return self.func()
 
+
 class Isolated:
     """Deep copy an object to prevent external mutations."""
 
@@ -135,6 +136,7 @@ def smart_args(allow_positional: bool = False) -> Callable:
     :param allow_positional: Whether to allow positional arguments.
     :return: A decorated function that processes Evaluated and Isolated arguments.
     """
+
     def decorator(func: Callable) -> Callable:
         spec = inspect.signature(func)
 
@@ -149,7 +151,9 @@ def smart_args(allow_positional: bool = False) -> Callable:
                     bound_args.arguments[name] = value.evaluate()
                 elif isinstance(value, Isolated):
                     print(f"Copying {name} using Isolated...")
-                    bound_args.arguments[name] = value.copy()  # Deep copy the Isolated value
+                    bound_args.arguments[
+                        name
+                    ] = value.copy()  # Deep copy the Isolated value
 
             return func(*bound_args.args, **bound_args.kwargs)
 
