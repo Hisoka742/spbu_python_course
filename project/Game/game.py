@@ -1,5 +1,5 @@
 import random
-from Project.Game.game import (
+from project.Game.game import (
     Wheel,
     Bot,
     ConservativeStrategy,
