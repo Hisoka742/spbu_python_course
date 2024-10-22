@@ -1,5 +1,5 @@
 import random
-
+from Project.Game.game import Wheel, Bot, ConservativeStrategy, AggressiveStrategy, RandomStrategy, Roulette, BotStrategyMeta, GameRulesMeta
 # Metaclass to enforce that any bot strategy class must implement the 'bet' method
 class BotStrategyMeta(type):
     def __new__(cls, name, bases, dct):
