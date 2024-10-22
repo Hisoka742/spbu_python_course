@@ -1,14 +1,4 @@
 import random
-from project.Game.game import (
-    Wheel,
-    Bot,
-    ConservativeStrategy,
-    AggressiveStrategy,
-    RandomStrategy,
-    Roulette,
-    BotStrategyMeta,
-    GameRulesMeta,
-)
 
 # Metaclass to enforce that any bot strategy class must implement the 'bet' method
 class BotStrategyMeta(type):
