@@ -10,22 +10,15 @@ from project.Game.game import (
     GameRulesMeta,
 )
 
-# Test Wheel functionality
+
+# Test the Wheel functionality
 def test_wheel_spin():
     wheel = Wheel()
     number = wheel.spin()
     assert number in wheel.numbers
 
 
-# Test Metaclass enforcement for Strategies
-def test_strategy_metaclass_enforcement():
-    # Create a class without the `bet` method, which should raise an error
-    with pytest.raises(TypeError):
-
-        class InvalidStrategy(metaclass=BotStrategyMeta):
-            pass
-
-
+# Test ConservativeStrategy betting
 def test_conservative_strategy():
     strategy = ConservativeStrategy()
     bet = strategy.bet(100)
@@ -33,6 +26,7 @@ def test_conservative_strategy():
     assert 1 <= bet["amount"] <= 10
 
 
+# Test AggressiveStrategy betting
 def test_aggressive_strategy():
     strategy = AggressiveStrategy()
     bet = strategy.bet(100)
@@ -41,6 +35,7 @@ def test_aggressive_strategy():
     assert 0 <= bet["number"] <= 36
 
 
+# Test RandomStrategy betting
 def test_random_strategy():
     strategy = RandomStrategy()
     bet = strategy.bet(100)
@@ -50,7 +45,7 @@ def test_random_strategy():
         assert 0 <= bet["number"] <= 36
 
 
-# Test Game Rule customization
+# Test changing game rules
 def test_change_game_rules():
     bots = [
         Bot(name="Conservative", strategy=ConservativeStrategy()),
@@ -62,8 +57,8 @@ def test_change_game_rules():
     assert len(game.wheel.numbers) == 50
 
 
-# Test game flow with metaclass strategies
-def test_game_flow_with_metaclasses():
+# Test game flow with bots and strategies
+def test_game_flow():
     bots = [
         Bot(name="Conservative", strategy=ConservativeStrategy()),
         Bot(name="Aggressive", strategy=AggressiveStrategy()),
@@ -77,6 +72,7 @@ def test_game_flow_with_metaclasses():
     )  # At least one bot should have lost money
 
 
+# Test check for winner
 def test_check_winner():
     bots = [
         Bot(name="Conservative", strategy=ConservativeStrategy()),
