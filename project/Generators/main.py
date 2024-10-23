@@ -12,6 +12,7 @@ def rgba_generator():
                 for a in range(0, 101, 2):  # Only even alpha values
                     yield (r, g, b, a)
 
+
 def get_nth_rgba(n):
     """Returns the nth RGBA vector from the generator."""
     gen = rgba_generator()
