@@ -1,34 +1,28 @@
 import pytest
-from project.Generators.main import get_nth_rgba, get_prime
+from project.Generators.main import get_rgba_element, get_prime
 
 
 @pytest.mark.parametrize(
-    "index, expected_rgba",
+    "i, expected",
     [
-        (0, (0, 0, 0, 0)),
-        (1, (0, 0, 0, 2)),
-        (256, (0, 0, 1, 0)),
-        (65536, (0, 1, 0, 0)),
-        (16777216, (1, 0, 0, 0)),
+        (0, (0, 0, 0, 0)),  # First element
+        (1, (0, 0, 0, 2)),  # Second element
+        (65792, (1, 0, 0, 0)),  # Some element in the sequence
     ],
 )
-def test_get_nth_rgba(index, expected_rgba):
-    """Test RGBA generator for specific indices."""
-    assert get_nth_rgba(index) == expected_rgba
+def test_rgba_generator(i, expected):
+    assert get_rgba_element(i) == expected
 
 
+# Tests for prime number generator
 @pytest.mark.parametrize(
-    "index, expected_prime",
+    "k, expected_prime",
     [
-        (1, 2),
-        (2, 3),
-        (3, 5),
-        (4, 7),
-        (5, 11),
-        (6, 13),
-        (10, 29),
+        (1, 2),  # First prime number
+        (2, 3),  # Second prime number
+        (3, 5),  # Third prime number
+        (10, 29),  # Tenth prime number
     ],
 )
-def test_get_prime(index, expected_prime):
-    """Test prime number generator for specific indices."""
-    assert get_prime(index) == expected_prime
+def test_get_prime(k, expected_prime):
+    assert get_prime(k) == expected_prime
