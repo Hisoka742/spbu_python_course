@@ -3,7 +3,7 @@ import itertools
 # RGBA Generator Function
 import itertools
 
-# Task 1: Corrected RGBA Generator Function
+# Corrected RGBA Generator Function
 def rgba_generator():
     """Generates RGBA values with R, G, B ranging from 0 to 255, and A taking even values from 0 to 100."""
     for r in range(256):
@@ -14,10 +14,23 @@ def rgba_generator():
 
 
 def get_nth_rgba(n):
-    """Returns the nth RGBA vector from the generator."""
-    gen = rgba_generator()
-    return next(itertools.islice(gen, n, None))
+    """Returns the nth RGBA vector from the generator, calculated directly."""
+    # Total number of combinations for each channel
+    total_combinations = 256 * 256 * 256 * 51  # R, G, B (256 each) and A (51 even numbers from 0 to 100)
 
+    if n >= total_combinations or n < 0:
+        raise ValueError("n is out of bounds for RGBA combinations")
+
+    # Calculate each component directly from n
+    a = (n % 51) * 2  # There are 51 even values for alpha, starting at 0
+    n //= 51
+    b = n % 256
+    n //= 256
+    g = n % 256
+    n //= 256
+    r = n % 256
+
+    return (r, g, b, a)
 
 # Prime number generator with decorator
 def prime_generator():
