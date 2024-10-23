@@ -14,7 +14,10 @@ def rgba_generator():
 def get_nth_rgba(n):
     """Returns the nth RGBA vector from the generator."""
     gen = rgba_generator()
-    return next(itertools.islice(gen, n, None))
+    for i, val in enumerate(gen):
+        if i == n:
+            print(f"At index {n}: {val}")  # Add this for debugging
+            return val
 
 
 # Prime number generator with decorator
@@ -25,6 +28,7 @@ def prime_generator():
     while True:
         if q not in D:
             # q is a new prime number
+            print(f"Prime found: {q}")  # Add this to print primes
             yield q
             D[q * q] = [q]
         else:
