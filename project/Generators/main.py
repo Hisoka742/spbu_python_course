@@ -1,23 +1,21 @@
 import itertools
 
 # RGBA Generator Function
-def rgba_generator():
-    return (
-        (r, g, b, a)
-        for r in range(256)
-        for g in range(256)
-        for b in range(256)
-        for a in range(0, 101, 2)  # Only even alpha values
-    )
+import itertools
 
+# Task 1: Corrected RGBA Generator Function
+def rgba_generator():
+    """Generates RGBA values with R, G, B ranging from 0 to 255, and A taking even values from 0 to 100."""
+    for r in range(256):
+        for g in range(256):
+            for b in range(256):
+                for a in range(0, 101, 2):  # Only even alpha values
+                    yield (r, g, b, a)
 
 def get_nth_rgba(n):
     """Returns the nth RGBA vector from the generator."""
     gen = rgba_generator()
-    for i, val in enumerate(gen):
-        if i == n:
-            print(f"At index {n}: {val}")  # Add this for debugging
-            return val
+    return next(itertools.islice(gen, n, None))
 
 
 # Prime number generator with decorator
