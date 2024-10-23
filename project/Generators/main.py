@@ -10,6 +10,7 @@ def rgba_generator():
         for a in range(0, 101, 2)  # Only even alpha values
     )
 
+
 def get_nth_rgba(n):
     """Returns the nth RGBA vector from the generator."""
     gen = rgba_generator()
@@ -32,12 +33,16 @@ def prime_generator():
             del D[q]
         q += 1
 
+
 def prime_decorator(func):
     """Decorator to get the k-th prime number."""
+
     def wrapper(k):
         gen = func()
         return next(itertools.islice(gen, k - 1, None))  # k-th prime, 1-indexed
+
     return wrapper
+
 
 @prime_decorator
 def get_prime():
