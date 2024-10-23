@@ -2,14 +2,16 @@ import pytest
 from project.Generators.main import get_rgba_element, get_prime
 
 
-@pytest.mark.parametrize("i, expected", [
-    (0, (0, 0, 0, 0)),     # First element
-    (1, (0, 0, 0, 2)),     # Second element
-    (65792, (0, 5, 10, 4)), # Corrected element for the test
-])
+@pytest.mark.parametrize(
+    "i, expected",
+    [
+        (0, (0, 0, 0, 0)),  # First element
+        (1, (0, 0, 0, 2)),  # Second element
+        (65792, (0, 5, 10, 4)),  # Corrected element for the test
+    ],
+)
 def test_rgba_generator(i, expected):
     assert get_rgba_element(i) == expected
-
 
 
 # Tests for prime number generator
