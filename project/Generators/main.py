@@ -16,7 +16,9 @@ def rgba_generator():
 def get_nth_rgba(n):
     """Returns the nth RGBA vector from the generator, calculated directly."""
     # Total number of combinations for each channel
-    total_combinations = 256 * 256 * 256 * 51  # R, G, B (256 each) and A (51 even numbers from 0 to 100)
+    total_combinations = (
+        256 * 256 * 256 * 51
+    )  # R, G, B (256 each) and A (51 even numbers from 0 to 100)
 
     if n >= total_combinations or n < 0:
         raise ValueError("n is out of bounds for RGBA combinations")
@@ -31,6 +33,7 @@ def get_nth_rgba(n):
     r = n % 256
 
     return (r, g, b, a)
+
 
 # Prime number generator with decorator
 def prime_generator():
