@@ -14,23 +14,18 @@ def rgba_generator():
 
 
 def get_nth_rgba(n):
-    """Returns the nth RGBA vector from the generator, calculated directly."""
-    # Total number of combinations for each channel
-    total_combinations = (
-        256 * 256 * 256 * 51
-    )  # R, G, B (256 each) and A (51 even numbers from 0 to 100)
+    """Returns the nth RGBA vector from the generator."""
+    # Total number of alpha values is 51 (0, 2, 4, ..., 100)
+    alpha_range = 51
 
-    if n >= total_combinations or n < 0:
-        raise ValueError("n is out of bounds for RGBA combinations")
-
-    # Calculate each component directly from n
-    a = (n % 51) * 2  # There are 51 even values for alpha, starting at 0
-    n //= 51
-    b = n % 256
+    # Calculate components based on n
+    a = (n % alpha_range) * 2  # Alpha in steps of 2
+    n //= alpha_range
+    b = n % 256  # Blue component
     n //= 256
-    g = n % 256
+    g = n % 256  # Green component
     n //= 256
-    r = n % 256
+    r = n % 256  # Red component
 
     return (r, g, b, a)
 
