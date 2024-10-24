@@ -10,7 +10,7 @@ from project.Game.game import (
     GameRulesMeta,
 )
 
-# Test Wheel functionality
+# Test Wheel functionality.
 def test_wheel_spin():
     wheel = Wheel()
     number = wheel.spin()
