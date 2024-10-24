@@ -1,7 +1,6 @@
 import threading
 from queue import Queue
-from typing import Callable, Any
-
+from typing import Callable, Any, Tuple
 
 class ThreadPool:
     """
@@ -17,7 +16,10 @@ class ThreadPool:
             num_threads (int): Number of worker threads in the pool.
         """
         self.num_threads = num_threads  # Number of threads in the pool
-        self.tasks = Queue()  # Queue to store tasks to be processed by threads
+
+        # Explicit type annotation for `tasks`
+        self.tasks: Queue[Tuple[Callable[[], Any], threading.Event]] = Queue()
+
         self.threads = []  # List to keep track of worker threads
         self.shutdown_flag = threading.Event()  # Event flag to signal shutdown
 
