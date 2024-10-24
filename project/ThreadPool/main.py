@@ -2,6 +2,7 @@ import threading
 from queue import Queue
 from typing import Callable, Any
 
+
 class ThreadPool:
     """
     ThreadPool class that manages a fixed number of worker threads.

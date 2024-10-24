@@ -1,12 +1,16 @@
 import pytest
 import time
-from project.ThreadPool.main import ThreadPool  # Assuming the ThreadPool class is saved in thread_pool.py
+from project.ThreadPool.main import (
+    ThreadPool,
+)  # Assuming the ThreadPool class is saved in thread_pool.py
+
 
 def test_basic_threadpool_execution():
     """
     Test basic functionality of the thread pool by enqueuing several tasks
     and ensuring that they are executed and completed.
     """
+
     def simple_task():
         # Task simulates a small delay to mimic work
         time.sleep(0.1)
@@ -22,7 +26,10 @@ def test_basic_threadpool_execution():
         event.wait()
 
     pool.dispose()  # Dispose the pool to stop threads
-    assert all(event.is_set() for event in done_events)  # Ensure all tasks are completed
+    assert all(
+        event.is_set() for event in done_events
+    )  # Ensure all tasks are completed
+
 
 def test_threadpool_size():
     """
@@ -31,6 +38,7 @@ def test_threadpool_size():
     pool = ThreadPool(4)  # Create a pool with 4 threads
     assert len(pool.threads) == 4  # Ensure 4 threads were created
     pool.dispose()  # Dispose the pool
+
 
 def test_task_execution_and_reuse():
     """
@@ -55,12 +63,16 @@ def test_task_execution_and_reuse():
         event.wait()
 
     pool.dispose()  # Dispose the pool
-    assert sorted(results) == [i * i for i in range(6)]  # Check if all results are correct
+    assert sorted(results) == [
+        i * i for i in range(6)
+    ]  # Check if all results are correct
+
 
 def test_dispose_stops_new_tasks():
     """
     Test that after calling dispose, no new tasks can be added to the pool.
     """
+
     def task():
         return "Should not be executed"
 
