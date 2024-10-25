@@ -1,6 +1,5 @@
-from typing import Optional
 from project.Game.strategy import Strategy, Bet
-import inspect  # Add this import
+from typing import Callable
 
 
 class Bot:
@@ -13,13 +12,12 @@ class Bot:
         self.strategy = strategy
         self.balance = Bot.DEFAULT_BALANCE
 
-    def make_bet(self, random_func) -> Bet:
+    def make_bet(self, random_func: Callable = random) -> Bet:
         """Makes a bet according to the bot's strategy using a random function if required."""
-        bet_method = self.strategy.bet
-        if len(inspect.signature(bet_method).parameters) > 1:
-            return bet_method(self.balance, random_func)
+        if self.strategy.needs_random_func():
+            return self.strategy.bet(self.balance, random_func)
         else:
-            return bet_method(self.balance)
+            return self.strategy.bet(self.balance)
 
     def win(self, amount: int) -> None:
         """Increases the bot's balance after a win."""
