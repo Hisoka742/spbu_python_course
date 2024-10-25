@@ -26,24 +26,24 @@ class Roulette:
             print(f"Round {self.current_round}: Wheel landed on {result}")
 
         for bot in self.bots:
-            bet = bot.make_bet(random_func=random.random)  # Pass random function here
+            bet = bot.make_bet(random_func=random.randint)  # Pass random.randint as random_func
             if self.verbose:
                 print(f"{bot.name} bets {bet.amount} on {bet.type}")
 
-        if bet.type == "number" and bet.number == result:
-            bot.win(bet.amount * 35)
-            if self.verbose:
-                print(f"{bot.name} wins on number bet!")
-        elif (bet.type == "red" and result % 2 == 0) or (
-            bet.type == "black" and result % 2 == 1
-        ):
-            bot.win(bet.amount * 2)
-            if self.verbose:
-                print(f"{bot.name} wins on color bet!")
-        else:
-            bot.lose(bet.amount)
-            if self.verbose:
-                print(f"{bot.name} loses the bet.")
+            if bet.type == "number" and bet.number == result:
+                bot.win(bet.amount * 35)
+                if self.verbose:
+                    print(f"{bot.name} wins on number bet!")
+            elif (bet.type == "red" and result % 2 == 0) or (
+                bet.type == "black" and result % 2 == 1
+            ):
+                bot.win(bet.amount * 2)
+                if self.verbose:
+                    print(f"{bot.name} wins on color bet!")
+            else:
+                bot.lose(bet.amount)
+                if self.verbose:
+                    print(f"{bot.name} loses the bet.")
 
     def show_state(self) -> str:
         return "\n".join(f"{bot.name} has {bot.balance} left." for bot in self.bots)
