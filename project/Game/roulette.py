@@ -1,6 +1,6 @@
 from project.Game.wheel import Wheel
 from project.Game.bot import Bot
-from project.Game.typing import List
+from typing import List
 
 
 class Roulette:
