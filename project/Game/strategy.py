@@ -6,7 +6,6 @@ import random
 @dataclass
 class Bet:
     """Represents a bet made by a bot."""
-
     type: str
     amount: int
     number: Optional[int] = None
@@ -24,7 +23,7 @@ class BotStrategyMeta(type):
 class Strategy(metaclass=BotStrategyMeta):
     """Abstract base class for betting strategies."""
 
-    def bet(self, balance: int, random_func: Optional[Callable] = None) -> Bet:
+    def bet(self, balance: int, random_func: Callable[..., float]) -> Bet:
         raise NotImplementedError("Each strategy must implement the 'bet' method.")
 
     def needs_random_func(self) -> bool:
@@ -33,26 +32,22 @@ class Strategy(metaclass=BotStrategyMeta):
 
 
 class ConservativeStrategy(Strategy):
-    def bet(self, balance: int, random_func: Optional[Callable] = None) -> Bet:
+    def bet(self, balance: int, random_func: Callable[..., float]) -> Bet:
         bet_amount = min(10, balance)
         return Bet(type="red", amount=bet_amount)
 
 
 class AggressiveStrategy(Strategy):
-    def bet(self, balance: int, random_func: Optional[Callable] = None) -> Bet:
+    def bet(self, balance: int, random_func: Callable[..., float]) -> Bet:
         bet_amount = min(50, balance)
         return Bet(type="number", amount=bet_amount, number=random.randint(0, 36))
 
 
 class RandomStrategy(Strategy):
-    def bet(self, balance: int, random_func: Optional[Callable] = None) -> Bet:
-        if random_func is None:
-            random_func = (
-                random  # Default to the `random` module if no function provided
-            )
-        bet_amount = random_func.randint(1, min(20, balance))
-        bet_type = random_func.choice(["red", "black", "number"])
-        number = random_func.randint(0, 36) if bet_type == "number" else None
+    def bet(self, balance: int, random_func: Callable[..., float] = random) -> Bet:
+        bet_amount = random.randint(1, min(20, balance))
+        bet_type = random.choice(["red", "black", "number"])
+        number = random.randint(0, 36) if bet_type == "number" else None
         return Bet(type=bet_type, amount=bet_amount, number=number)
 
     def needs_random_func(self) -> bool:

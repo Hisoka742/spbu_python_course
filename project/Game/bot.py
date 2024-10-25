@@ -13,7 +13,7 @@ class Bot:
         self.strategy = strategy
         self.balance = Bot.DEFAULT_BALANCE
 
-    def make_bet(self, random_func: Callable = random) -> Bet:
+    def make_bet(self, random_func: Callable[..., float] = random) -> Bet:
         """Makes a bet according to the bot's strategy using a random function if required."""
         if self.strategy.needs_random_func():
             return self.strategy.bet(self.balance, random_func)
