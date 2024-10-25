@@ -33,13 +33,13 @@ class Strategy(metaclass=BotStrategyMeta):
 
 
 class ConservativeStrategy(Strategy):
-    def bet(self, balance: int, random_func: Callable[[int, int], int]) -> Bet:
+    def bet(self, balance: int, random_func: Callable[[int, int], int] = None) -> Bet:
         bet_amount = min(10, balance)
         return Bet(type="red", amount=bet_amount)
 
 
 class AggressiveStrategy(Strategy):
-    def bet(self, balance: int, random_func: Callable[[int, int], int]) -> Bet:
+    def bet(self, balance: int, random_func: Callable[[int, int], int] = None) -> Bet:
         bet_amount = min(50, balance)
         return Bet(type="number", amount=bet_amount, number=random.randint(0, 36))
 
