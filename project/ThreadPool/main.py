@@ -10,7 +10,7 @@ class ThreadPool:
 
     def __init__(self, num_threads: int):
         self.num_threads = num_threads
-        self.tasks = []  # List to hold tasks with a lock for thread-safe operations
+        self.tasks: list[Tuple[Callable[[], Any], threading.Event]] = []    # List to hold tasks with a lock for thread-safe operations
         self.lock = threading.Lock()  # Lock for synchronizing access to tasks
         self.task_available = (
             threading.Event()
