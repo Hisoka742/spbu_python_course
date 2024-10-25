@@ -1,14 +1,12 @@
 import pytest
-from project.Game.game import (
-    Wheel,
-    Bot,
+from project.Game.wheel import Wheel
+from project.Game.bot import Bot
+from project.Game.strategy import (
     ConservativeStrategy,
     AggressiveStrategy,
     RandomStrategy,
-    Roulette,
-    BotStrategyMeta,
-    GameRulesMeta,
 )
+from project.Game.roulette import Roulette
 
 # Test Wheel functionality
 def test_wheel_spin():
