@@ -6,6 +6,7 @@ import random
 @dataclass
 class Bet:
     """Represents a bet made by a bot."""
+
     type: str
     amount: int
     number: Optional[int] = None
