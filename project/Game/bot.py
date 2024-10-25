@@ -5,7 +5,9 @@ class Bot:
     """Represents a bot player in the game with a specific strategy."""
 
     DEFAULT_BALANCE: int = 100  # Default starting balance for bots
-
+    type: str
+    amount: int
+    number: Optional[int] = None  # Allows None as a default value
     def __init__(self, name: str, strategy: Strategy):
         self.name = name
         self.strategy = strategy
