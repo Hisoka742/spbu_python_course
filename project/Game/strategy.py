@@ -1,6 +1,6 @@
-from abc import ABC, abstractmethod
 from dataclasses import dataclass
-import random
+from typing import Optional
+from abc import ABC, abstractmethod
 
 
 @dataclass
@@ -9,39 +9,22 @@ class Bet:
 
     type: str
     amount: int
-    number: int = None  # Optional field
+    number: Optional[int] = None
 
 
-class Strategy(ABC):
+class BotStrategyMeta(type):
+    """Metaclass that enforces the implementation of the 'bet' method in each strategy."""
+
+    def __new__(cls, name, bases, dct):
+        if "bet" not in dct:
+            raise TypeError(f"Every strategy class must implement 'bet' method.")
+        return super().__new__(cls, name, bases, dct)
+
+
+class Strategy(ABC, metaclass=BotStrategyMeta):
     """Abstract base class for betting strategies."""
 
     @abstractmethod
-    def bet(self, balance: int) -> Bet:
-        """Determines the bot's bet based on its balance."""
+    def bet(self, balance: int, random_func) -> Bet:
+        """Determines the bot's bet based on its balance using the random function provided."""
         pass
-
-
-class ConservativeStrategy(Strategy):
-    """Strategy that bets conservatively on red."""
-
-    def bet(self, balance: int) -> Bet:
-        bet_amount = min(10, balance)
-        return Bet(type="red", amount=bet_amount)
-
-
-class AggressiveStrategy(Strategy):
-    """Strategy that bets aggressively on a specific number."""
-
-    def bet(self, balance: int) -> Bet:
-        bet_amount = min(50, balance)
-        return Bet(type="number", amount=bet_amount, number=random.randint(0, 36))
-
-
-class RandomStrategy(Strategy):
-    """Strategy that bets randomly on color or a number."""
-
-    def bet(self, balance: int) -> Bet:
-        bet_amount = random.randint(1, min(20, balance))
-        bet_type = random.choice(["red", "black", "number"])
-        number = random.randint(0, 36) if bet_type == "number" else None
-        return Bet(type=bet_type, amount=bet_amount, number=number)

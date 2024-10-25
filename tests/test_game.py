@@ -26,26 +26,26 @@ def test_strategy_metaclass_enforcement():
 
 def test_conservative_strategy():
     strategy = ConservativeStrategy()
-    bet = strategy.bet(100)
-    assert bet["type"] == "red"
-    assert 1 <= bet["amount"] <= 10
+    bet = strategy.bet(100, random.choice)  # Pass random.choice as required
+    assert bet.type == "red"  # Use dot notation for attributes
+    assert 1 <= bet.amount <= 10
 
 
 def test_aggressive_strategy():
     strategy = AggressiveStrategy()
-    bet = strategy.bet(100)
-    assert bet["type"] == "number"
-    assert 1 <= bet["amount"] <= 50
-    assert 0 <= bet["number"] <= 36
+    bet = strategy.bet(100, random.choice)
+    assert bet.type == "number"
+    assert 1 <= bet.amount <= 50
+    assert 0 <= bet.number <= 36
 
 
 def test_random_strategy():
     strategy = RandomStrategy()
-    bet = strategy.bet(100)
-    assert bet["type"] in ["red", "black", "number"]
-    assert 1 <= bet["amount"] <= 20
-    if bet["type"] == "number":
-        assert 0 <= bet["number"] <= 36
+    bet = strategy.bet(100, random.choice)
+    assert bet.type in ["red", "black", "number"]
+    assert 1 <= bet.amount <= 20
+    if bet.type == "number":
+        assert 0 <= bet.number <= 36
 
 
 # Test Game Rule customization
