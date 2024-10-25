@@ -24,32 +24,25 @@ class BotStrategyMeta(type):
 class Strategy(metaclass=BotStrategyMeta):
     """Abstract base class for betting strategies."""
 
-    def bet(self, balance: int, random_func) -> Bet:
-        """Determines the bot's bet based on its balance using the random function provided."""
+    def bet(self, balance: int) -> Bet:
         raise NotImplementedError("Each strategy must implement the 'bet' method.")
 
 
 class ConservativeStrategy(Strategy):
-    """Strategy that bets conservatively on red."""
-
-    def bet(self, balance: int, random_func) -> Bet:
+    def bet(self, balance: int) -> Bet:
         bet_amount = min(10, balance)
         return Bet(type="red", amount=bet_amount)
 
 
 class AggressiveStrategy(Strategy):
-    """Strategy that bets aggressively on a specific number."""
-
-    def bet(self, balance: int, random_func) -> Bet:
+    def bet(self, balance: int) -> Bet:
         bet_amount = min(50, balance)
-        return Bet(type="number", amount=bet_amount, number=random_func(range(0, 37)))
+        return Bet(type="number", amount=bet_amount, number=random.randint(0, 36))
 
 
 class RandomStrategy(Strategy):
-    """Strategy that bets randomly on color or a number."""
-
-    def bet(self, balance: int, random_func) -> Bet:
-        bet_amount = random_func(range(1, min(21, balance + 1)))
-        bet_type = random_func(["red", "black", "number"])
-        number = random_func(range(0, 37)) if bet_type == "number" else None
+    def bet(self, balance: int) -> Bet:
+        bet_amount = random.randint(1, min(20, balance))
+        bet_type = random.choice(["red", "black", "number"])
+        number = random.randint(0, 36) if bet_type == "number" else None
         return Bet(type=bet_type, amount=bet_amount, number=number)
