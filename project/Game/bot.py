@@ -1,3 +1,4 @@
+from typing import Optional  # Add this import
 from project.Game.strategy import Strategy, Bet
 
 
@@ -5,18 +6,15 @@ class Bot:
     """Represents a bot player in the game with a specific strategy."""
 
     DEFAULT_BALANCE: int = 100  # Default starting balance for bots
-    type: str
-    amount: int
-    number: Optional[int] = None  # Allows None as a default value
 
     def __init__(self, name: str, strategy: Strategy):
         self.name = name
         self.strategy = strategy
         self.balance = Bot.DEFAULT_BALANCE
 
-    def make_bet(self) -> Bet:
-        """Makes a bet according to the bot's strategy."""
-        return self.strategy.bet(self.balance)
+    def make_bet(self, random_func) -> Bet:
+        """Makes a bet according to the bot's strategy using a random function."""
+        return self.strategy.bet(self.balance, random_func)
 
     def win(self, amount: int) -> None:
         """Increases the bot's balance after a win."""
