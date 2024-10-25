@@ -1,3 +1,4 @@
+import random
 from project.Game.strategy import Strategy, Bet
 from typing import Callable
 
