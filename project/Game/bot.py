@@ -1,4 +1,4 @@
-from strategy import Strategy, Bet
+from project.Game.strategy import Strategy, Bet
 
 
 class Bot:
