@@ -26,7 +26,9 @@ class Roulette:
             print(f"Round {self.current_round}: Wheel landed on {result}")
 
         for bot in self.bots:
-            bet = bot.make_bet(random_func=random.randint)  # Pass random.randint as random_func
+            bet = bot.make_bet(
+                random_func=random.randint
+            )  # Pass random.randint as random_func
             if self.verbose:
                 print(f"{bot.name} bets {bet.amount} on {bet.type}")
 
