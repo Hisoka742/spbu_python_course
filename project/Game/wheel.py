@@ -1,11 +1,14 @@
 import random
 from typing import List
 
+
 class Wheel:
     """Represents a roulette wheel for the game."""
 
     def __init__(self, pockets: int = 37):
-        self.numbers = list(range(pockets)) + [0] if pockets == 37 else list(range(pockets))
+        self.numbers = (
+            list(range(pockets)) + [0] if pockets == 37 else list(range(pockets))
+        )
         self.current_number: Optional[int] = None  # Specify as Optional[int]
 
     def spin(self) -> int:

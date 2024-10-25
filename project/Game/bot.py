@@ -8,6 +8,7 @@ class Bot:
     type: str
     amount: int
     number: Optional[int] = None  # Allows None as a default value
+
     def __init__(self, name: str, strategy: Strategy):
         self.name = name
         self.strategy = strategy
