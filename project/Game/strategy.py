@@ -6,6 +6,7 @@ import random
 @dataclass
 class Bet:
     """Represents a bet made by a bot."""
+
     type: str
     amount: int
     number: Optional[int] = None
@@ -46,7 +47,9 @@ class AggressiveStrategy(Strategy):
 class RandomStrategy(Strategy):
     def bet(self, balance: int, random_func: Optional[Callable] = None) -> Bet:
         if random_func is None:
-            random_func = random  # Default to the `random` module if no function provided
+            random_func = (
+                random  # Default to the `random` module if no function provided
+            )
         bet_amount = random_func.randint(1, min(20, balance))
         bet_type = random_func.choice(["red", "black", "number"])
         number = random_func.randint(0, 36) if bet_type == "number" else None
