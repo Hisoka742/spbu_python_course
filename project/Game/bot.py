@@ -18,7 +18,9 @@ class Bot:
         if self.strategy.needs_random_func():
             return self.strategy.bet(self.balance, random_func)
         else:
-            return self.strategy.bet(self.balance, lambda x, y: x)  # Dummy function for unused random_func
+            return self.strategy.bet(
+                self.balance, lambda x, y: x
+            )  # Dummy function for unused random_func
 
     def win(self, amount: int) -> None:
         """Increases the bot's balance after a win."""
