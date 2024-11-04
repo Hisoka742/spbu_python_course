@@ -49,7 +49,7 @@ def preprocess_data(data):
     median_fare = sorted(fares)[len(fares) // 2]
     data["Fare"].fillna(median_fare, inplace=True)
 
-    # Drop irrelevant columns but keep 'Name'
+    # Drop irrelevant columns but keep 'Name' and 'Fare'
     data.drop(["Ticket", "Cabin"], axis=1, inplace=True)
     return data
 
@@ -71,7 +71,7 @@ def get_age_by_class_and_gender(data):
 def filter_k_survivors(data):
     """Return a sorted list of survivors with last names starting with 'K'."""
     k_survivors = data[(data["Survived"] == 1) & (data["LastName"].str.startswith("K"))]
-    return k_survivors[["OriginalName", "Fare"]].sort_values(by="Fare", ascending=False)
+    return k_survivors[["Name", "Fare"]].sort_values(by="Fare", ascending=False)
 
 
 def max_relatives_with_survivor(data):
