@@ -1,4 +1,4 @@
 mypy
-pandas
+pandas-stubs
 pre-commit
 pytest
