@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 
 def load_and_concat_data(train_path, test_path):
@@ -14,9 +13,13 @@ def load_and_concat_data(train_path, test_path):
 
 def preprocess_data(data):
     """Preprocess the Titanic dataset."""
+    # Convert categorical fields using pandas built-in functionality
     data["Survived"] = data["Survived"].astype("category")
     data["Pclass"] = data["Pclass"].astype("category")
     data["Sex"] = data["Sex"].astype("category")
+
+    # Extract last name for filtering purposes
+    data["LastName"] = data["Name"].apply(lambda name: name.split(",")[0].strip())
 
     # Feature engineering
     data["Title"] = data["Name"].apply(
@@ -25,9 +28,26 @@ def preprocess_data(data):
     data["FamilySize"] = data["SibSp"] + data["Parch"]
     data["CabinBool"] = data["Cabin"].notnull().astype(int)
 
-    # Handle missing values
-    data["Age"].fillna(data.groupby("Title")["Age"].transform("median"), inplace=True)
-    data["Fare"].fillna(data["Fare"].median(), inplace=True)
+    # Handle missing values for Age by calculating the median age for each title group without numpy
+    title_medians = {}
+    for title in data["Title"].unique():
+        ages = [
+            age for age in data.loc[data["Title"] == title, "Age"] if pd.notnull(age)
+        ]
+        median_age = sorted(ages)[len(ages) // 2] if ages else None
+        title_medians[title] = median_age
+
+    data["Age"] = data.apply(
+        lambda row: title_medians[row["Title"]]
+        if pd.isnull(row["Age"])
+        else row["Age"],
+        axis=1,
+    )
+
+    # Fill missing fare values with the median of all available fare values
+    fares = [fare for fare in data["Fare"] if pd.notnull(fare)]
+    median_fare = sorted(fares)[len(fares) // 2]
+    data["Fare"].fillna(median_fare, inplace=True)
 
     # Drop irrelevant columns
     data.drop(["Name", "Ticket", "Cabin"], axis=1, inplace=True)
@@ -50,7 +70,7 @@ def get_age_by_class_and_gender(data):
 
 def filter_k_survivors(data):
     """Return a sorted list of survivors with last names starting with 'K'."""
-    k_survivors = data[(data["Survived"] == 1) & (data["Name"].str.startswith("K"))]
+    k_survivors = data[(data["Survived"] == 1) & (data["LastName"].str.startswith("K"))]
     return k_survivors.sort_values(by="Fare", ascending=False)
 
 
@@ -62,7 +82,14 @@ def max_relatives_with_survivor(data):
 
 def compare_fare_by_cabin(data):
     """Calculate and compare the average fare for passengers with and without cabin information."""
-    avg_fare_with_cabin = data[data["CabinBool"] == 1]["Fare"].mean()
-    avg_fare_without_cabin = data[data["CabinBool"] == 0]["Fare"].mean()
-    fare_ratio = avg_fare_with_cabin / avg_fare_without_cabin
+    with_cabin = data[data["CabinBool"] == 1]["Fare"]
+    without_cabin = data[data["CabinBool"] == 0]["Fare"]
+
+    avg_fare_with_cabin = sum(with_cabin) / len(with_cabin)
+    avg_fare_without_cabin = sum(without_cabin) / len(without_cabin)
+    fare_ratio = (
+        avg_fare_with_cabin / avg_fare_without_cabin
+        if avg_fare_without_cabin != 0
+        else None
+    )
     return avg_fare_with_cabin, avg_fare_without_cabin, fare_ratio

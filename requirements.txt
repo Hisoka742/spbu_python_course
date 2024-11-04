@@ -1,5 +1,3 @@
 mypy
-numpy
-pandas
 pre-commit
 pytest
