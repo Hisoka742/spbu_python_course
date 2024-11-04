@@ -74,7 +74,6 @@ def filter_k_survivors(data):
     return k_survivors[["OriginalName", "Fare"]].sort_values(by="Fare", ascending=False)
 
 
-
 def max_relatives_with_survivor(data):
     """Return the maximum number of relatives with any survivor."""
     data["Relatives"] = data["SibSp"] + data["Parch"]
