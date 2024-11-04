@@ -71,7 +71,7 @@ def get_age_by_class_and_gender(data):
 def filter_k_survivors(data):
     """Return a sorted list of survivors with last names starting with 'K'."""
     k_survivors = data[(data["Survived"] == 1) & (data["LastName"].str.startswith("K"))]
-    return k_survivors.sort_values(by="Fare", ascending=False)
+    return k_survivors.sort_values(by="Fare", ascending=False)[["Name", "Fare"]]
 
 
 def max_relatives_with_survivor(data):

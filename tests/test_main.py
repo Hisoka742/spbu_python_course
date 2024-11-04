@@ -51,12 +51,12 @@ def test_age_by_class_and_gender(sample_data):
     assert age_difference > 0
 
 
-def filter_k_survivors(data):
-    """Return a sorted list of survivors with last names starting with 'K'."""
-    k_survivors = data[(data["Survived"] == 1) & (data["LastName"].str.startswith("K"))]
-    return k_survivors.sort_values(by="Fare", ascending=False)[
-        ["Name", "Fare"]
-    ]  # Keep Name in the result
+def test_filter_k_survivors(sample_data):
+    """Test filtering survivors with last names starting with 'K'."""
+    k_survivors = filter_k_survivors(sample_data)
+    assert (
+        k_survivors.iloc[0]["Name"] == "Keane, Mr. Mike"
+    )  # Keane should be first due to highest fare among Ks
 
 
 def test_max_relatives_with_survivor(sample_data):
