@@ -1,6 +1,6 @@
 import pytest
 import pandas as pd
-from main import (
+from project.Jupyter.main import (
     load_and_concat_data,
     preprocess_data,
     get_class_counts,
