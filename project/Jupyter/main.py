@@ -28,7 +28,7 @@ def preprocess_data(data):
     data["FamilySize"] = data["SibSp"] + data["Parch"]
     data["CabinBool"] = data["Cabin"].notnull().astype(int)
 
-    # Handle missing values for Age by calculating the median age for each title group without numpy
+    # Handle missing values for Age
     title_medians = {}
     for title in data["Title"].unique():
         ages = [
@@ -44,13 +44,13 @@ def preprocess_data(data):
         axis=1,
     )
 
-    # Fill missing fare values with the median of all available fare values
+    # Fill missing fare values
     fares = [fare for fare in data["Fare"] if pd.notnull(fare)]
     median_fare = sorted(fares)[len(fares) // 2]
     data["Fare"].fillna(median_fare, inplace=True)
 
-    # Drop irrelevant columns
-    data.drop(["Name", "Ticket", "Cabin"], axis=1, inplace=True)
+    # Drop irrelevant columns but keep 'Name'
+    data.drop(["Ticket", "Cabin"], axis=1, inplace=True)
     return data
 
 
@@ -71,8 +71,8 @@ def get_age_by_class_and_gender(data):
 def filter_k_survivors(data):
     """Return a sorted list of survivors with last names starting with 'K'."""
     k_survivors = data[(data["Survived"] == 1) & (data["LastName"].str.startswith("K"))]
-    # Include "Name" from the original DataFrame
-    return k_survivors[["Name", "Fare"]].sort_values(by="Fare", ascending=False)
+    return k_survivors[["OriginalName", "Fare"]].sort_values(by="Fare", ascending=False)
+
 
 
 def max_relatives_with_survivor(data):
