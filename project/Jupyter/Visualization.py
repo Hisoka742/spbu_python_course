@@ -1,8 +1,8 @@
-import seaborn as sns
-import plotly.express as px
-import plotly.graph_objects as go
+import seaborn as sns  # type: ignore
+import plotly.express as px  # type: ignore
+import plotly.graph_objects as go  # type: ignore
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d import Axes3D  # type: ignore
 from project.Jupyter.main import preprocess_data, load_and_concat_data
 
 # Ensure the 'data' DataFrame is preprocessed
