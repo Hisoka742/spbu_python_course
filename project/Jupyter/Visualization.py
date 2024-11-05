@@ -3,6 +3,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from project.Jupyter.main import preprocess_data, load_and_concat_data
 
 # Ensure the 'data' DataFrame is preprocessed
 data = preprocess_data(load_and_concat_data("train.csv", "test.csv"))
