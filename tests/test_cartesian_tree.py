@@ -1,5 +1,5 @@
 import pytest
-from project.tree.cartesian_tree import CartesianTree
+from project.Tree.CartesianTree import CartesianTree
 
 
 def test_cartesian_tree_insertion_and_retrieval():
