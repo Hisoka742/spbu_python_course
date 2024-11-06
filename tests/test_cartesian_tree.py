@@ -1,5 +1,5 @@
 import pytest
-from project.Tree.CartesianTree import CartesianTree
+from project.tree.cartesian_tree import CartesianTree
 
 
 def test_cartesian_tree_insertion_and_retrieval():
@@ -87,6 +87,20 @@ def test_cartesian_tree_priority_insertion():
 
     assert tree[1] == 100
     assert tree[2] == 50
+
+
+def test_cartesian_tree_automatic_priority():
+    """
+    Test that priority is assigned automatically if not provided.
+    """
+    tree = CartesianTree()
+    tree[10] = None  # Insert key=10 without priority
+    tree[20] = None  # Insert key=20 without priority
+
+    assert 10 in tree
+    assert 20 in tree
+    assert tree[10] is not None
+    assert tree[20] is not None
 
 
 if __name__ == "__main__":
