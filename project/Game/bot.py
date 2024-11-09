@@ -3,7 +3,6 @@ import random
 from project.Game.strategy import Strategy, Bet
 from typing import Callable
 
-
 class Bot:
     """Represents a bot player in the game with a specific strategy."""
 
@@ -31,13 +30,28 @@ class Bot:
             return self.strategy.bet(self.balance)
 
     def win(self, amount: int) -> None:
-        """Increases the bot's balance after a win."""
+        """
+        Increases the bot's balance after a win.
+
+        Args:
+            amount (int): The amount to add to the bot's balance.
+        """
         self.balance += amount
 
     def lose(self, amount: int) -> None:
-        """Decreases the bot's balance after a loss."""
+        """
+        Decreases the bot's balance after a loss.
+
+        Args:
+            amount (int): The amount to subtract from the bot's balance.
+        """
         self.balance -= amount
 
     def is_broke(self) -> bool:
-        """Checks if the bot has run out of money."""
+        """
+        Checks if the bot has run out of money.
+
+        Returns:
+            bool: True if the bot's balance is 0 or less, False otherwise.
+        """
         return self.balance <= 0
