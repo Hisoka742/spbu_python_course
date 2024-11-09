@@ -3,6 +3,7 @@ import random
 from project.Game.strategy import Strategy, Bet
 from typing import Callable
 
+
 class Bot:
     """Represents a bot player in the game with a specific strategy."""
 

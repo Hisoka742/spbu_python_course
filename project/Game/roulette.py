@@ -4,6 +4,7 @@ from project.Game.bot import Bot
 from project.Game.bet_type import BetType
 from typing import List
 
+
 class GameRulesMeta(type):
     """Metaclass to handle game rule configurations."""
 
