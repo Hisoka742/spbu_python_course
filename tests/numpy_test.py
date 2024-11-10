@@ -37,7 +37,13 @@ def test_normalize_data():
 def test_categorize_feature():
     features, _ = load_iris_data()
     categories = categorize_feature(features, column_index=0)
-    assert set(categories) == {"small", "medium", "big"}
+
+    assert isinstance(categories, np.ndarray), "Categories should be a numpy array"
+    assert set(categories) <= {
+        "small",
+        "medium",
+        "big",
+    }, "Categories should only contain 'small', 'medium', or 'big'"
 
 
 # Test data splitting

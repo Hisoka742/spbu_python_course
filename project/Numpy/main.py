@@ -71,10 +71,12 @@ def categorize_feature(features, column_index=0):
     """
     feature_column = features[:, column_index]
     categories = np.empty(feature_column.shape, dtype=object)
-    small, medium, big = np.quantile(feature_column, [0.25, 0.75])
-    categories[feature_column < small] = "small"
-    categories[(feature_column >= small) & (feature_column <= medium)] = "medium"
-    categories[feature_column > medium] = "big"
+    q1, q3 = np.quantile(feature_column, [0.25, 0.75])  # only two quantiles are needed
+
+    categories[feature_column < q1] = "small"
+    categories[(feature_column >= q1) & (feature_column <= q3)] = "medium"
+    categories[feature_column > q3] = "big"
+
     return categories
 
 
