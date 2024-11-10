@@ -1,3 +1,7 @@
 mypy
+numpy
 pre-commit
 pytest
+requests
+scikit-learn
+types-requests
