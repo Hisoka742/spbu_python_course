@@ -1,8 +1,8 @@
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.svm import SVC
-from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split  # type: ignore
+from sklearn.preprocessing import StandardScaler  # type: ignore
+from sklearn.svm import SVC  # type: ignore
+from sklearn.decomposition import PCA  # type: ignore
 import requests
 
 
