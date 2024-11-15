@@ -174,16 +174,18 @@ class CartesianTree(MutableMapping):
         self.root = self._delete(self.root, key)
         self._size -= 1
 
-    def __contains__(self, key: int) -> bool:
+    def __contains__(self, key: object) -> bool:
         """
         Checks if a node with the specified key exists in the tree.
 
         Args:
-            key (int): Key of the node.
+            key (object): Key of the node.
 
         Returns:
             bool: True if the node exists, False otherwise.
         """
+        if not isinstance(key, int):
+            return False
         node = self.root
         while node:
             if key == node.key:
