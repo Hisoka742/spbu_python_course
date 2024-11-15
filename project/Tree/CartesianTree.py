@@ -16,7 +16,9 @@ class Node:
 
     def __init__(self, key: int, priority: Optional[int] = None):
         self.key: int = key
-        self.priority: int = priority if priority is not None else random.randint(1, 100)
+        self.priority: int = (
+            priority if priority is not None else random.randint(1, 100)
+        )
         self.left: Optional[Node] = None
         self.right: Optional[Node] = None
 
@@ -34,7 +36,9 @@ class CartesianTree(MutableMapping):
         self.root: Optional[Node] = None
         self._size: int = 0
 
-    def _split(self, root: Optional[Node], key: int) -> Tuple[Optional[Node], Optional[Node]]:
+    def _split(
+        self, root: Optional[Node], key: int
+    ) -> Tuple[Optional[Node], Optional[Node]]:
         """
         Splits the tree rooted at `root` into two subtrees based on `key`.
 
@@ -204,7 +208,9 @@ class CartesianTree(MutableMapping):
         """Reverse-order traversal iterator for the tree."""
         return self._reverse_order_traversal(self.root)
 
-    def _reverse_order_traversal(self, node: Optional[Node]) -> Generator[int, None, None]:
+    def _reverse_order_traversal(
+        self, node: Optional[Node]
+    ) -> Generator[int, None, None]:
         if node:
             yield from self._reverse_order_traversal(node.right)
             yield node.key
