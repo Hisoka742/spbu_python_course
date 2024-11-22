@@ -10,6 +10,7 @@ Original file is located at
 """
 
 import pandas as pd
+from IPython.display import display
 
 # Load datasets
 train_data = pd.read_csv("project/task9/train.csv")
