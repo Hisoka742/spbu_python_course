@@ -2,8 +2,8 @@ IPython
 matplotlib
 mypy
 numpy
-pandas
+pandas-stubs
 pre-commit
 pytest
 scikit-learn
-seaborn
+seaborn-stubs
