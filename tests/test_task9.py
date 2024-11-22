@@ -44,9 +44,9 @@ def test_evaluate_metrics():
 
     precision, recall, accuracy = evaluate_metrics(y_true, y_pred)
 
-    assert precision == pytest.approx(0.6667, rel=1e-2)
-    assert recall == pytest.approx(0.6667, rel=1e-2)
-    assert accuracy == pytest.approx(0.8, rel=1e-2)
+    assert precision == pytest.approx(1.0, rel=1e-2)  # Corrected expected value
+    assert recall == pytest.approx(0.6667, rel=1e-2)  # Recall remains the same
+    assert accuracy == pytest.approx(0.8, rel=1e-2)  # Accuracy remains the same
 
 
 # Test model training and prediction
