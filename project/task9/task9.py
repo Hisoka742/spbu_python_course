@@ -25,7 +25,6 @@ train_data.head()
 - Drop irrelevant features if necessary (e.g., `Name`, `Ticket`).
 """
 
-import pandas as pd
 
 # Check the column names in train_data
 print(train_data.columns)
@@ -64,7 +63,7 @@ Perform some initial visualizations to understand the dataset.
 """
 
 # Commented out IPython magic to ensure Python compatibility.
-import seaborn as sns
+import seaborn as sns  # type: ignore
 import matplotlib.pyplot as plt
 
 # Ensuring plots are displayed in the notebook (only needed in some environments like Jupyter/Colab)
@@ -136,10 +135,10 @@ Now, we can proceed to implement a classification model. I'll use a decision tre
 
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.model_selection import train_test_split  # type: ignore
+from sklearn.tree import DecisionTreeClassifier  # type: ignore
+from sklearn.linear_model import LogisticRegression  # type: ignore
+from sklearn.metrics import accuracy_score, classification_report  # type: ignore
 
 # Load and preprocess the data (assuming train_data is a pandas DataFrame)
 # Split features and target
