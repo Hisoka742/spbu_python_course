@@ -1,11 +1,9 @@
 IPython
-matplotlib
+matplotlib>=3.4.0
 mypy
-numpy
-pandas
-pandas-stubs
+numpy>=1.21.0
+pandas>=1.3.0
 pre-commit
 pytest
-scikit-learn
-seaborn
-seaborn-stubs
+scikit-learn>=0.24.0
+seaborn>=0.11.0
