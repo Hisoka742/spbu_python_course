@@ -1,9 +1,9 @@
 import pytest
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
+import pandas as pd # type: ignore
+import numpy as np # type: ignore
+from sklearn.model_selection import train_test_split # type: ignore
+from sklearn.linear_model import LogisticRegression # type: ignore
+from sklearn.tree import DecisionTreeClassifier # type: ignore
 from project.task9.task9 import (
     evaluate_metrics,
 )  # Import the custom evaluation function
