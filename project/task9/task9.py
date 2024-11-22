@@ -12,8 +12,8 @@ Original file is located at
 import pandas as pd
 
 # Load datasets
-train_data = pd.read_csv("train")
-test = pd.read_csv("test")
+train_data = pd.read_csv("/project/task9/train.csv")
+test = pd.read_csv("/project/task9/test.csv")
 
 # Display first few rows of the training set
 train_data.head()
