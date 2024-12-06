@@ -1,6 +1,6 @@
 import pytest
-from sklearn.datasets import load_iris # type: ignore
-from sklearn.preprocessing import StandardScaler # type: ignore
+from sklearn.datasets import load_iris  # type: ignore
+from sklearn.preprocessing import StandardScaler  # type: ignore
 import numpy as np
 
 # Assuming SimpleKNN is your custom k-NN implementation
