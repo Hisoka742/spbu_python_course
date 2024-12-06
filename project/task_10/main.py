@@ -9,7 +9,7 @@ from sklearn.svm import SVC  # type: ignore
 from sklearn.tree import DecisionTreeClassifier  # type: ignore
 from sklearn.neighbors import KNeighborsClassifier  # type: ignore
 import matplotlib.pyplot as plt
-import seaborn as sns # type: ignore
+import seaborn as sns  # type: ignore
 from collections import Counter
 
 # Step 1: Load and Prepare the Data
