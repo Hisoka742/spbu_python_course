@@ -1,13 +1,13 @@
 import numpy as np
 import pandas as pd
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.datasets import load_iris # type: ignore
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score # type: ignore
+from sklearn.preprocessing import StandardScaler # type: ignore
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score # type: ignore
+from sklearn.linear_model import LogisticRegression # type: ignore
+from sklearn.svm import SVC# type: ignore
+from sklearn.tree import DecisionTreeClassifier# type: ignore
+from sklearn.neighbors import KNeighborsClassifier# type: ignore
 import matplotlib.pyplot as plt
 import seaborn as sns
 from collections import Counter
