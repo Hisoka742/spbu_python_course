@@ -9,22 +9,22 @@ import seaborn as sns  # Advanced visualization library based on matplotlib.
 # Machine learning tools
 from sklearn.datasets import (
     fetch_california_housing,
-)  # Dataset utility from scikit-learn.
+)  # type: ignore
 from sklearn.preprocessing import (
     StandardScaler,
     PolynomialFeatures,
-)  # Preprocessing utilities for scaling and polynomial feature generation.
+)  # type: ignore
 from sklearn.model_selection import (
     train_test_split,
     GridSearchCV,
-)  # Utilities for splitting data and hyperparameter tuning.
+)  # type: ignore
 from sklearn.linear_model import (
     LinearRegression,
     Ridge,
     Lasso,
-)  # Linear model algorithms.
-from sklearn.ensemble import RandomForestRegressor  # Ensemble method for regression.
-from sklearn.metrics import mean_squared_error  # Performance metric.
+)  # type: ignore
+from sklearn.ensemble import RandomForestRegressor  # type: ignore
+from sklearn.metrics import mean_squared_error  # type: ignore
 
 # Statistical modeling
 from scipy.stats import (
@@ -102,7 +102,7 @@ fig, axes = plt.subplots(3, 3, figsize=(15, 15))
 fig.suptitle("Distribution of Features and Target Variable")
 for i, col in enumerate(df.columns):
     sns.histplot(df[col], kde=True, ax=axes[i // 3, i % 3])
-plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.tight_layout(rect=(0, 0.03, 1, 0.95))
 
 # Standard scatter plots
 features = ["MedInc", "AveRooms", "AveOccup", "Latitude", "Longitude"]

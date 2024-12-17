@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
-from sklearn.datasets import make_regression
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import make_regression  # type: ignore
+from sklearn.model_selection import train_test_split  # type: ignore
+from sklearn.preprocessing import StandardScaler  # type: ignore
 
 from project.task11.main import CustomLinearRegression
 
