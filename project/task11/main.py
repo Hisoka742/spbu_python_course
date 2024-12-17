@@ -42,14 +42,14 @@ california_housing = fetch_california_housing()
 df = pd.DataFrame(california_housing.data, columns=california_housing.feature_names)
 df["MedianHouseValue"] = california_housing.target
 
-# Display the first few rows of the dataset
-display(df.head())
+# print the first few rows of the dataset
+print(df.head())
 
 # Show a quick description of the dataset
-display(df.describe())
+print(df.describe())
 
 # Information about data types and missing values
-display(df.info())
+print(df.info())
 # Load the data
 california_housing = fetch_california_housing()
 df = pd.DataFrame(california_housing.data, columns=california_housing.feature_names)
@@ -57,18 +57,18 @@ df["MedianHouseValue"] = california_housing.target
 
 # Initial Data Analysis
 print("First few rows of the dataset:")
-display(df.head())
+print(df.head())
 
 print("\nData Types and Missing Values:")
-display(df.info())
+print(df.info())
 
 print("\nStatistical Summary of Numeric Features:")
-display(df.describe())
+print(df.describe())
 
 # Check for missing values
 missing_values = df.isnull().sum()
 print("\nMissing Values in Each Column:")
-display(missing_values)
+print(missing_values)
 
 # Data Cleaning
 # As of the typical output, California Housing data from sklearn does not contain missing values,
@@ -83,7 +83,7 @@ IQR = Q3 - Q1
 df = df[~((df < (Q1 - 1.5 * IQR)) | (df > (Q3 + 1.5 * IQR))).any(axis=1)]
 
 print("\nData after handling outliers:")
-display(df.describe())
+print(df.describe())
 
 # Additional cleaning steps can be included here based on further analysis.
 # Load the dataset
@@ -112,7 +112,7 @@ fig.suptitle("Relationships between Selected Features and Median House Value")
 for i, feature in enumerate(features):
     if df[feature].notnull().all() and df["MedianHouseValue"].notnull().all():
         sns.scatterplot(x=df[feature], y=df["MedianHouseValue"], ax=axes[i // 2, i % 2])
-        display(f"Plotting {feature} vs MedianHouseValue")  # Debugging statement
+        print(f"Plotting {feature} vs MedianHouseValue")  # Debugging statement
 
 plt.show()
 # Adding a contour plot for feature 'MedInc' vs 'MedianHouseValue'
@@ -155,8 +155,8 @@ df_scaled = pd.DataFrame(
 )
 df_scaled["MedianHouseValue"] = df["MedianHouseValue"]
 
-# Display the head of the transformed DataFrame
-display(df_scaled.head())
+# print the head of the transformed DataFrame
+print(df_scaled.head())
 # Load and split the data
 data = fetch_california_housing()
 X = pd.DataFrame(data.data, columns=data.feature_names)
@@ -333,7 +333,7 @@ aml.train(x=data.feature_names, y="target", training_frame=train)
 
 # Leaderboard
 lb = aml.leaderboard
-display(lb.head())
+print(lb.head())
 
 # Predict on test data
 preds = aml.leader.predict(test)
