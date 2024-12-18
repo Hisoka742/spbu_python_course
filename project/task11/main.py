@@ -47,7 +47,9 @@ df["BedroomsPerRoom"] = df["AveBedrms"] / df["AveRooms"]
 
 poly = PolynomialFeatures(degree=2, include_bias=False)
 poly_features = poly.fit_transform(df[["MedInc", "HouseAge"]])
-df_poly = pd.DataFrame(poly_features, columns=poly.get_feature_names_out(["MedInc", "HouseAge"]))
+df_poly = pd.DataFrame(
+    poly_features, columns=poly.get_feature_names_out(["MedInc", "HouseAge"])
+)
 df = df.drop(["MedInc", "HouseAge"], axis=1).join(df_poly)
 
 scaler = StandardScaler()
@@ -62,7 +64,9 @@ from sklearn.metrics import mean_squared_error
 X = df_scaled
 y = df["MedianHouseValue"]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 models = {
     "LinearRegression": LinearRegression(),
@@ -74,11 +78,16 @@ models = {
 params = {
     "Ridge": {"alpha": [0.1, 1, 10]},
     "Lasso": {"alpha": [0.1, 1, 10]},
-    "RandomForestRegressor": {"n_estimators": [50, 100], "max_features": ["auto", "sqrt"]},
+    "RandomForestRegressor": {
+        "n_estimators": [50, 100],
+        "max_features": ["auto", "sqrt"],
+    },
 }
 
 for model_name, model in models.items():
-    grid = GridSearchCV(model, params.get(model_name, {}), cv=5, scoring="neg_mean_squared_error")
+    grid = GridSearchCV(
+        model, params.get(model_name, {}), cv=5, scoring="neg_mean_squared_error"
+    )
     grid.fit(X_train, y_train)
     y_pred = grid.best_estimator_.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
@@ -95,12 +104,15 @@ class CustomLinearRegression:
         X_b = np.c_[np.ones((X.shape[0], 1)), X]
         self.weights = np.random.randn(X_b.shape[1], 1)
         for _ in range(self.iterations):
-            gradient = 2 / X_b.shape[0] * X_b.T.dot(X_b.dot(self.weights) - y.reshape(-1, 1))
+            gradient = (
+                2 / X_b.shape[0] * X_b.T.dot(X_b.dot(self.weights) - y.reshape(-1, 1))
+            )
             self.weights -= self.learning_rate * gradient
 
     def predict(self, X):
         X_b = np.c_[np.ones((X.shape[0], 1)), X]
         return X_b.dot(self.weights)
+
 
 # Custom model testing
 custom_model = CustomLinearRegression(learning_rate=0.01, iterations=1000)

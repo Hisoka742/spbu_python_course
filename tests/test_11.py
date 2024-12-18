@@ -11,6 +11,7 @@ from sklearn.ensemble import RandomForestRegressor
 # Import custom implementation
 from main import CustomLinearRegression
 
+
 @pytest.fixture
 def california_data():
     """Load California housing data."""
@@ -18,6 +19,7 @@ def california_data():
     df = pd.DataFrame(data.data, columns=data.feature_names)
     df["MedianHouseValue"] = data.target
     return df
+
 
 @pytest.fixture
 def processed_data(california_data):
@@ -35,16 +37,19 @@ def processed_data(california_data):
 
     return X_train, X_test, y_train, y_test
 
+
 def test_data_loading(california_data):
     """Test if data is loaded correctly."""
     assert not california_data.empty, "Dataframe should not be empty"
     assert "MedianHouseValue" in california_data.columns, "Target column is missing"
+
 
 def test_data_scaling(processed_data):
     """Test if data scaling produces the correct shape."""
     X_train, X_test, y_train, y_test = processed_data
     assert X_train.shape[1] == X_test.shape[1], "Feature dimensions must match"
     assert len(y_train) > 0, "Training target should not be empty"
+
 
 def test_linear_regression(processed_data):
     """Test training and prediction with Linear Regression."""
@@ -57,6 +62,7 @@ def test_linear_regression(processed_data):
     assert mse > 0, "MSE should be positive"
     assert len(y_pred) == len(y_test), "Prediction length must match test target length"
 
+
 def test_random_forest_regression(processed_data):
     """Test training and prediction with Random Forest."""
     X_train, X_test, y_train, y_test = processed_data
@@ -68,6 +74,7 @@ def test_random_forest_regression(processed_data):
     assert mse > 0, "MSE should be positive"
     assert len(y_pred) == len(y_test), "Prediction length must match test target length"
 
+
 def test_custom_linear_regression(processed_data):
     """Test custom linear regression implementation."""
     X_train, X_test, y_train, y_test = processed_data
@@ -76,6 +83,8 @@ def test_custom_linear_regression(processed_data):
     y_pred = custom_model.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
 
-    assert custom_model.weights is not None, "Weights should be initialized after training"
+    assert (
+        custom_model.weights is not None
+    ), "Weights should be initialized after training"
     assert mse > 0, "MSE should be positive"
     assert len(y_pred) == len(y_test), "Prediction length must match test target length"
