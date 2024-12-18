@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt  # Basic plotting library in Python.
 import seaborn as sns  # type: ignore
 
 # Machine learning tools
-from sklearn.datasets import fetch_california_housing # type: ignore
-from sklearn.preprocessing import StandardScaler,PolynomialFeatures# type: ignore
-from sklearn.model_selection import train_test_split,GridSearchCV  # type: ignore
-from sklearn.linear_model import LinearRegression,Ridge,Lasso # type: ignore
+from sklearn.datasets import fetch_california_housing  # type: ignore
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures  # type: ignore
+from sklearn.model_selection import train_test_split, GridSearchCV  # type: ignore
+from sklearn.linear_model import LinearRegression, Ridge, Lasso  # type: ignore
 from sklearn.ensemble import RandomForestRegressor  # type: ignore
 from sklearn.metrics import mean_squared_error  # type: ignore
 
