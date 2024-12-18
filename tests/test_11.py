@@ -8,8 +8,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 
-# Import custom implementation
-from main import CustomLinearRegression
+from project.task11.main import CustomLinearRegression
 
 
 @pytest.fixture
