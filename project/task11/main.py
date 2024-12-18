@@ -48,10 +48,10 @@ print("First few rows of the dataset:")
 print(df.head())
 
 print("\nData Types and Missing Values:")
-print(df.info())
+df.info()
 
 print("\nStatistical Summary of Numeric Features:")
-print(df.describe())
+df.describe()
 
 # Check for missing values
 missing_values = df.isnull().sum()
