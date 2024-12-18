@@ -248,20 +248,16 @@ plt.show()
 
 class CustomLinearRegression:
     def __init__(self, alpha=0, learning_rate=0.01, iterations=1000):
-        self.alpha = alpha  # Regularization strength
-        self.learning_rate = learning_rate  # Step size for gradient descent
-        self.iterations = iterations  # Number of iterations for gradient descent
-        self.weights = None  # Weights for the regression model
+        self.alpha = alpha
+        self.learning_rate = learning_rate
+        self.iterations = iterations
+        self.weights = None  # Ensure this is set during fitting
 
     def fit(self, X, y):
-        # Adding bias term as column of ones
         X_b = np.c_[np.ones((X.shape[0], 1)), X]
         m, n = X_b.shape
+        self.weights = np.random.randn(n, 1)  # Proper initialization
 
-        # Initialize weights randomly
-        self.weights = np.random.randn(n, 1)
-
-        # Gradient descent optimization
         for i in range(self.iterations):
             predictions = X_b.dot(self.weights)
             errors = predictions - y.reshape(-1, 1)
@@ -272,12 +268,10 @@ class CustomLinearRegression:
             self.weights -= self.learning_rate * gradients
 
     def predict(self, X):
-        # Predict using learned weights
         X_b = np.c_[np.ones((X.shape[0], 1)), X]
-        return X_b.dot(self.weights)
+        return X_b.dot(self.weights)  # This should now work as weights are initialized
 
     def mse(self, y_true, y_pred):
-        # Calculate mean squared error
         return np.mean((y_true - y_pred.flatten()) ** 2)
 
 
