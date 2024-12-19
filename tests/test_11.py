@@ -7,16 +7,22 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.ensemble import RandomForestRegressor
-from project.task11.main import models, param_grids  # Import your models and param grids from the main module
+from project.task11.main import (
+    models,
+    param_grids,
+)  # Import your models and param grids from the main module
+
 
 @pytest.fixture
 def load_data():
     """Load the California housing dataset and return as DataFrame."""
     from sklearn.datasets import fetch_california_housing
+
     data = fetch_california_housing()
     df = pd.DataFrame(data.data, columns=data.feature_names)
     df["MedianHouseValue"] = data.target
     return df
+
 
 @pytest.fixture
 def processed_data(load_data):
@@ -36,18 +42,25 @@ def processed_data(load_data):
 
     return X_train, X_test, y_train, y_test
 
+
 def test_data_loading(load_data):
     """Test if the dataset is loaded correctly."""
     df = load_data
     assert not df.empty, "The dataset should not be empty."
-    assert "MedianHouseValue" in df.columns, "Target column 'MedianHouseValue' should exist."
+    assert (
+        "MedianHouseValue" in df.columns
+    ), "Target column 'MedianHouseValue' should exist."
+
 
 def test_data_processing(processed_data):
     """Test if the data is processed correctly."""
     X_train, X_test, y_train, y_test = processed_data
-    assert X_train.shape[1] == X_test.shape[1], "Feature dimensions must match for train and test sets."
+    assert (
+        X_train.shape[1] == X_test.shape[1]
+    ), "Feature dimensions must match for train and test sets."
     assert len(y_train) > 0, "Training labels should not be empty."
     assert len(y_test) > 0, "Test labels should not be empty."
+
 
 def test_pipeline_training(processed_data):
     """Test if models train and predict correctly."""
@@ -80,4 +93,6 @@ def test_pipeline_training(processed_data):
 
         # Assert results
         assert mse > 0, f"MSE for {model_name} should be positive."
-        assert len(y_pred) == len(y_test), "Prediction size must match the test label size."
+        assert len(y_pred) == len(
+            y_test
+        ), "Prediction size must match the test label size."
