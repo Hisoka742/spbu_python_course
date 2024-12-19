@@ -1,13 +1,13 @@
 import pytest
 import pandas as pd
-from sklearn.impute import SimpleImputer
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.linear_model import LinearRegression, Ridge, Lasso
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error
-from sklearn.datasets import fetch_california_housing
+from sklearn.impute import SimpleImputer  # type: ignore
+from sklearn.pipeline import Pipeline  # type: ignore
+from sklearn.preprocessing import StandardScaler  # type: ignore
+from sklearn.model_selection import train_test_split, GridSearchCV  # type: ignore
+from sklearn.linear_model import LinearRegression, Ridge, Lasso  # type: ignore
+from sklearn.ensemble import RandomForestRegressor  # type: ignore
+from sklearn.metrics import mean_squared_error  # type: ignore
+from sklearn.datasets import fetch_california_housing  # type: ignore
 
 # Load California housing dataset
 data = fetch_california_housing()
