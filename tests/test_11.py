@@ -1,89 +1,83 @@
 import pytest
-import numpy as np
 import pandas as pd
-from sklearn.datasets import fetch_california_housing
-from sklearn.model_selection import train_test_split
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import mean_squared_error
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.ensemble import RandomForestRegressor
-
-from project.task11.main import CustomLinearRegression
-
+from project.task11.main import models, param_grids  # Import your models and param grids from the main module
 
 @pytest.fixture
-def california_data():
-    """Load California housing data."""
+def load_data():
+    """Load the California housing dataset and return as DataFrame."""
+    from sklearn.datasets import fetch_california_housing
     data = fetch_california_housing()
     df = pd.DataFrame(data.data, columns=data.feature_names)
     df["MedianHouseValue"] = data.target
     return df
 
-
 @pytest.fixture
-def processed_data(california_data):
-    """Process data: scale features and split into train/test."""
-    df = california_data.copy()
+def processed_data(load_data):
+    """Process the dataset: handle missing values, split into train/test."""
+    df = load_data
+    # Impute missing values
+    df.iloc[:, :-1] = SimpleImputer(strategy="mean").fit_transform(df.iloc[:, :-1])
+
+    # Features and target
     X = df.drop("MedianHouseValue", axis=1)
     y = df["MedianHouseValue"]
 
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
-
+    # Split into train and test
     X_train, X_test, y_train, y_test = train_test_split(
-        X_scaled, y, test_size=0.2, random_state=42
+        X, y, test_size=0.2, random_state=42
     )
 
     return X_train, X_test, y_train, y_test
 
+def test_data_loading(load_data):
+    """Test if the dataset is loaded correctly."""
+    df = load_data
+    assert not df.empty, "The dataset should not be empty."
+    assert "MedianHouseValue" in df.columns, "Target column 'MedianHouseValue' should exist."
 
-def test_data_loading(california_data):
-    """Test if data is loaded correctly."""
-    assert not california_data.empty, "Dataframe should not be empty"
-    assert "MedianHouseValue" in california_data.columns, "Target column is missing"
-
-
-def test_data_scaling(processed_data):
-    """Test if data scaling produces the correct shape."""
+def test_data_processing(processed_data):
+    """Test if the data is processed correctly."""
     X_train, X_test, y_train, y_test = processed_data
-    assert X_train.shape[1] == X_test.shape[1], "Feature dimensions must match"
-    assert len(y_train) > 0, "Training target should not be empty"
+    assert X_train.shape[1] == X_test.shape[1], "Feature dimensions must match for train and test sets."
+    assert len(y_train) > 0, "Training labels should not be empty."
+    assert len(y_test) > 0, "Test labels should not be empty."
 
-
-def test_linear_regression(processed_data):
-    """Test training and prediction with Linear Regression."""
+def test_pipeline_training(processed_data):
+    """Test if models train and predict correctly."""
     X_train, X_test, y_train, y_test = processed_data
-    model = LinearRegression()
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    mse = mean_squared_error(y_test, y_pred)
 
-    assert mse > 0, "MSE should be positive"
-    assert len(y_pred) == len(y_test), "Prediction length must match test target length"
+    # Train and evaluate each model
+    for model_name, model in models.items():
+        # Create pipeline
+        pipeline = Pipeline(
+            [
+                ("imputer", SimpleImputer(strategy="mean")),
+                ("scaler", StandardScaler()),
+                ("regressor", model),
+            ]
+        )
 
+        # GridSearchCV
+        grid = GridSearchCV(
+            estimator=pipeline,
+            param_grid=param_grids.get(model_name, {}),
+            scoring="neg_mean_squared_error",
+            cv=5,
+            error_score="raise",
+        )
 
-def test_random_forest_regression(processed_data):
-    """Test training and prediction with Random Forest."""
-    X_train, X_test, y_train, y_test = processed_data
-    model = RandomForestRegressor(n_estimators=10, random_state=42)
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    mse = mean_squared_error(y_test, y_pred)
+        # Train and predict
+        grid.fit(X_train, y_train)
+        y_pred = grid.best_estimator_.predict(X_test)
+        mse = mean_squared_error(y_test, y_pred)
 
-    assert mse > 0, "MSE should be positive"
-    assert len(y_pred) == len(y_test), "Prediction length must match test target length"
-
-
-def test_custom_linear_regression(processed_data):
-    """Test custom linear regression implementation."""
-    X_train, X_test, y_train, y_test = processed_data
-    custom_model = CustomLinearRegression(learning_rate=0.01, iterations=100)
-    custom_model.fit(X_train, y_train.values)
-    y_pred = custom_model.predict(X_test)
-    mse = mean_squared_error(y_test, y_pred)
-
-    assert (
-        custom_model.weights is not None
-    ), "Weights should be initialized after training"
-    assert mse > 0, "MSE should be positive"
-    assert len(y_pred) == len(y_test), "Prediction length must match test target length"
+        # Assert results
+        assert mse > 0, f"MSE for {model_name} should be positive."
+        assert len(y_pred) == len(y_test), "Prediction size must match the test label size."
