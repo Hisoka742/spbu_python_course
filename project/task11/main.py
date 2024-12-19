@@ -1,12 +1,13 @@
-from sklearn.pipeline import Pipeline
+import pytest
+import pandas as pd
 from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.datasets import fetch_california_housing
-import pandas as pd
 
 # Load California housing dataset
 data = fetch_california_housing()
@@ -40,7 +41,7 @@ param_grids = {
     "Lasso": {"regressor__alpha": [0.1, 1, 10]},
     "RandomForestRegressor": {
         "regressor__n_estimators": [50, 100],
-        "regressor__max_features": ["auto", "sqrt"],
+        "regressor__max_features": ["sqrt", "log2"],
     },
 }
 
