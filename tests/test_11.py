@@ -1,12 +1,12 @@
 import pytest
 import pandas as pd
-from sklearn.impute import SimpleImputer
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import mean_squared_error
-from sklearn.linear_model import LinearRegression, Ridge, Lasso
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.impute import SimpleImputer # type: ignore
+from sklearn.pipeline import Pipeline# type: ignore
+from sklearn.preprocessing import StandardScaler # type: ignore
+from sklearn.model_selection import train_test_split, GridSearchCV # type: ignore
+from sklearn.metrics import mean_squared_error # type: ignore
+from sklearn.linear_model import LinearRegression, Ridge, Lasso # type: ignore
+from sklearn.ensemble import RandomForestRegressor # type: ignore
 from project.task11.main import (
     models,
     param_grids,
