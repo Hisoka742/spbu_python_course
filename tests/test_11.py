@@ -1,5 +1,6 @@
 import pytest
 import pandas as pd
+from sklearn.datasets import fetch_california_housing  # type: ignore
 from sklearn.impute import SimpleImputer  # type: ignore
 from sklearn.pipeline import Pipeline  # type: ignore
 from sklearn.preprocessing import StandardScaler  # type: ignore
